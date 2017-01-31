@@ -5,7 +5,7 @@
     template: `<div ui-grid="$ctrl.gridOptions"></div>`
 }
 
-angular.module("ng2uigrid").component("ntGrid", ntGrid);
+angular.module("ng2uigridcrud").component("ntGrid", ntGrid);
 
 import { Directive, ElementRef, Injector, Input, Output, EventEmitter } from "@angular/core";
 import { UpgradeComponent } from "@angular/upgrade/static";

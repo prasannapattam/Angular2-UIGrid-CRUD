@@ -1,16 +1,26 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "my-app",
-  template: `<heroes></heroes>`,
+  template: `<a routerLink="/heroes">Heroes</a><br />
+<router-outlet></router-outlet>`,
 })
-export class AppComponent  { }
+export class AppComponent implements OnInit {
+
+    constructor(private router: Router) { }
+
+    ngOnInit() {
+        this.router.navigate(["/heroes"]);
+    }
+
+}
 
 import { downgradeComponent } from "@angular/upgrade/static";
 
-angular.module("ng2uigrid")
+angular.module("ng2uigridcrud")
     .directive(
-    "myApp",
-    downgradeComponent({ component: AppComponent }) as angular.IDirectiveFactory
+        "myApp",
+        downgradeComponent({ component: AppComponent }) as angular.IDirectiveFactory
     );
 

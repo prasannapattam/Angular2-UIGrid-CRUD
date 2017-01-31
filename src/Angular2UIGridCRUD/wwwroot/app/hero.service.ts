@@ -1,5 +1,6 @@
-﻿import { Injectable } from "@angular/core";
-import { Http, Response } from "@angular/http";
+﻿/// <reference path="app-routing.module.ts" />
+import { Injectable } from "@angular/core";
+import { Http, Response, RequestOptions, URLSearchParams } from "@angular/http";
 
 import { Hero } from "./hero";
 
@@ -7,13 +8,20 @@ import { Observable } from "rxjs/Observable";
 
 @Injectable()
 export class HeroService {
-    private heroesUrl = "http://localhost:53020/app/heroes";  // web api url
+    private heroesUrl = "http://localhost:53020/app/heroes"; 
+    private heroUrl = "http://localhost:53020/app/heroget"; 
 
     constructor(private http: Http) { }
 
     getHeroes(): Observable<Hero[]> {
         return this.http.get(this.heroesUrl)
             .map((response: Response) => response.json() as Hero[])
+            .catch(this.handleError);
+    }
+
+    getHero(id: number): Observable<Hero> {
+        return this.http.get(this.heroUrl, new RequestOptions({ search: new URLSearchParams("id=" + id)}))
+            .map((response: Response) => response.json() as Hero)
             .catch(this.handleError);
     }
 

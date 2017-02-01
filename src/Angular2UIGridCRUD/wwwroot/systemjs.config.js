@@ -23,10 +23,13 @@
       '@angular/router': 'npm:@angular/router/bundles/router.umd.js',
       '@angular/forms': 'npm:@angular/forms/bundles/forms.umd.js',
       '@angular/upgrade/static': 'npm:@angular/upgrade/bundles/upgrade-static.umd.js',
+      '@angular/material': 'npm:@angular/material/bundles/material.umd.js',
+      '@angular/flex-layout': 'npm:@angular/flex-layout/bundles/flex-layout.umd.js',
 
       // other libraries
       'rxjs': 'npm:rxjs',
-      'angular': 'npm:angular/angular.js'
+      'angular': 'npm:angular/angular.js',
+      'hammerjs': 'npm:hammerjs/hammer.js'
     },
     // packages tells the System loader how to load when no filename and/or no extension
     packages: {

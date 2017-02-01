@@ -1,6 +1,7 @@
 ﻿import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 
+import { ServiceDocument } from "./framework/service-document";
 import { Hero } from "./hero";
 import { HeroService } from "./hero.service";
 import { GridOptions } from "./grid-options";
@@ -8,7 +9,7 @@ import { GridOptions } from "./grid-options";
 
 @Component({
     selector: "heroes",
-    templateUrl: "/app/heroes.component.html"
+    templateUrl: "app/heroes.component.html"
 })
 export class HeroesComponent implements OnInit  {
     gridOptions: GridOptions;
@@ -21,20 +22,20 @@ export class HeroesComponent implements OnInit  {
             { name: "name" },
             { name: "team" },
             { name: "group" },
-            { name: "Edit", field: "id", cellTemplate: `<a href="/hero" ng-click="grid.appScope.navigate($event, row.entity)">edit</a>` }
+            { name: "Action", field: "id", cellTemplate: `<a href="/hero" ng-click="grid.appScope.navigate($event, row.entity)">edit</a>` }
         ];
 
         this.gridOptions.appScopeProvider = this;
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.getHeroes();
     }
 
     getHeroes(): void {
         this.heroService
             .getHeroes()
-            .subscribe((heroes: Hero[]) => this.gridOptions.data = heroes);
+            .subscribe((serviceDocument: ServiceDocument<Hero[]>) => this.gridOptions.data = serviceDocument.data);
     }
 
     navigate($event: any, hero: Hero): void {

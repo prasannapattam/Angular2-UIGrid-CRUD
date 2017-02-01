@@ -9,7 +9,7 @@ namespace Angular2UIGridCRUD.Controllers
 {
     public class AppController : Controller
     {
-        public List<HeroModel> heroes = new List<HeroModel>()
+        public static List<HeroModel> heroes = new List<HeroModel>()
         {
                 new HeroModel() { Id = 1, Name = "Captain America", Team = "Avengers", Group = "Marvel"},
                 new HeroModel() { Id = 2, Name = "Hulk", Team = "Avengers", Group = "Marvel"},
@@ -27,14 +27,18 @@ namespace Angular2UIGridCRUD.Controllers
                 new HeroModel() { Id = 14, Name = "Martian Manhunter", Team = "Justice League", Group = "DC"}
         };
 
-        public List<HeroModel> Heroes()
+        public ServiceDocument<List<HeroModel>> Heroes()
         {
-            return this.heroes;
+            return new ServiceDocument<List<HeroModel>>() { Data = heroes };
         }
 
-        public HeroModel HeroGet(int id)
+        public ServiceDocument<HeroModel> HeroGet(int id)
         {
-            return this.heroes.Single(h => h.Id == id);
+            ServiceDocument<HeroModel> serviceDocument = new ServiceDocument<HeroModel>();
+            serviceDocument.Data = heroes.Single(h => h.Id == id);
+            serviceDocument.DomainData.Add("team", new List<string>() { "Avengers", "Justice League" });
+
+            return serviceDocument;
         }
     }
 }

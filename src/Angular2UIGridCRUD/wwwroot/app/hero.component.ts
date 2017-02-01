@@ -1,20 +1,21 @@
 ﻿import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 
+import { ServiceDocument } from "./framework/service-document";
 import { Hero } from "./hero";
 
 @Component({
     selector: "hero",
-    template: `<h1>Hero: {{name}}</h1>`,
+    templateUrl: "app/hero.component.html"
 })
 export class HeroComponent implements OnInit {
-    name: string = "Prasanna";
+    name: string;
     constructor(private route: ActivatedRoute) { }
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.route.data
-            .subscribe((data: { hero: Hero }) => {
-                this.name = data.hero.name;
+            .subscribe((data: { serviceDocument: ServiceDocument<Hero> }) => {
+                this.name = data.serviceDocument.data.name;
            });
     }
 }

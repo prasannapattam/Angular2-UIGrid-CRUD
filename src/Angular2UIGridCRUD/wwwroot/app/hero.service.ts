@@ -1,27 +1,27 @@
 ﻿/// <reference path="app-routing.module.ts" />
 import { Injectable } from "@angular/core";
 import { Http, Response, RequestOptions, URLSearchParams } from "@angular/http";
-
-import { Hero } from "./hero";
-
 import { Observable } from "rxjs/Observable";
+
+import { ServiceDocument } from "./framework/service-document";
+import { Hero } from "./hero";
 
 @Injectable()
 export class HeroService {
-    private heroesUrl = "http://localhost:53020/app/heroes"; 
-    private heroUrl = "http://localhost:53020/app/heroget"; 
+    private heroesUrl = "http://localhost:53020/app/heroes";
+    private heroUrl = "http://localhost:53020/app/heroget";
 
     constructor(private http: Http) { }
 
-    getHeroes(): Observable<Hero[]> {
+    getHeroes(): Observable<ServiceDocument<Hero[]>> {
         return this.http.get(this.heroesUrl)
-            .map((response: Response) => response.json() as Hero[])
+            .map((response: Response) => response.json() as ServiceDocument<Hero[]>)
             .catch(this.handleError);
     }
 
-    getHero(id: number): Observable<Hero> {
+    getHero(id: number): Observable<ServiceDocument<Hero>> {
         return this.http.get(this.heroUrl, new RequestOptions({ search: new URLSearchParams("id=" + id)}))
-            .map((response: Response) => response.json() as Hero)
+            .map((response: Response) => response.json() as ServiceDocument<Hero>)
             .catch(this.handleError);
     }
 

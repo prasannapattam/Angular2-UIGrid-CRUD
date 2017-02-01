@@ -11,7 +11,7 @@ const appRoutes: Routes = [
         path: "hero/:id",
         component: HeroComponent,
         resolve: {
-            hero: HeroResolver
+            serviceDocument: HeroResolver
         }
     },
     { path: "", redirectTo: "/heroes", pathMatch: "full" }

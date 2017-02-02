@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "lib": [ "es2015", "dom" ],
+    "noImplicitAny": false,
+    "suppressImplicitAnyIndexErrors": true,
+    "types": [
+      "hammerjs",
+      "rx"
+    ]
+  },
+  "exclude": [
+    "node_modules",
+    "wwwroot/node_modules"
+  ],
+  "include": [
+    "wwwroot/app/**/*.ts"
+  ],
+  "compileOnSave": true
+}

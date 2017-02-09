@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Angular2UIGridCRUD.Models
+namespace Angular2UIGridCRUD.Api.Hero
 {
     public class HeroModel
     {
@@ -11,5 +12,5 @@ namespace Angular2UIGridCRUD.Models
         public string Name { get; set; }
         public string Team { get; set; }
         public string Group { get; set; }
-    }
+   }
 }

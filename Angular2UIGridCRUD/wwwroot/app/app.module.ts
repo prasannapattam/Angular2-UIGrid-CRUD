@@ -2,28 +2,18 @@ import { NgModule } from "@angular/core";
 import { FrameworkModule } from "./framework/framework.module";
 
 import { AppRoutingModule } from "./app-routing.module";
-
 import { AppComponent } from "./app.component";
-import { HeroesComponent } from "./heroes.component";
-import { HeroComponent } from "./hero.component";
 
-import { HeroService } from "./hero.service";
-import { HeroResolver } from "./hero-resolver";
-
+import { HeroModule } from "./hero/hero.module";
 
 @NgModule({
     imports: [
         FrameworkModule,
-        AppRoutingModule
+        AppRoutingModule,
+        HeroModule
     ],
     declarations: [
-        AppComponent,
-        HeroesComponent,
-        HeroComponent
-    ],
-    providers: [
-        HeroService,
-        HeroResolver
+        AppComponent
     ],
     entryComponents: [
         AppComponent

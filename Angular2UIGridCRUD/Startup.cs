@@ -31,8 +31,14 @@ namespace Angular2UIGridCRUD
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
-                    name: "default",
-                    template: "{controller}/{action}/{id?}");
+                    name: "webapi",
+                    template: "api/{controller}/{action}/{id?}",
+                    defaults: new { controller = "App", action = "Index" });
+
+                routes.MapRoute(
+                    name: "catchall",
+                    template: "{*url}",
+                    defaults: new { controller = "Home", action = "Index" });
             });
         }
     }

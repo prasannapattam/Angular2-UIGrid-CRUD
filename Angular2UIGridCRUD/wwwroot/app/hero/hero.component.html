@@ -1,0 +1,10 @@
+﻿<form novalidate (ngSubmit)="save()" [formGroup]="serviceDocument.profileForm">
+    <div fxLayout="row">
+        <fx-input fxFlex="20" placeholder="Name" controlName="name" [formGroup]="serviceDocument.profileForm"></fx-input>
+        <fx-input fxFlex="20" placeholder="Team" controlName="team" [formGroup]="serviceDocument.profileForm"></fx-input>
+        <fx-input fxFlex="20" placeholder="Group" controlName="group" [formGroup]="serviceDocument.profileForm"></fx-input>
+        <button type="submit">Submit</button>
+    </div>
+</form>
+
+

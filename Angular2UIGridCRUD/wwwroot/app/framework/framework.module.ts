@@ -1,7 +1,10 @@
-﻿import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
+﻿import { NgModule, CUSTOM_ELEMENTS_SCHEMA, Injector } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
-import { HttpModule } from "@angular/http";
 import { UpgradeModule } from "@angular/upgrade/static";
+
+import { RouterModule } from "@angular/router";
+import { HttpModule } from "@angular/http";
+import { ReactiveFormsModule }   from '@angular/forms';
 import { MaterialModule } from "@angular/material";
 import { FlexLayoutModule } from "@angular/flex-layout";
 
@@ -9,28 +12,44 @@ import "./rxjs-operators";
 import "hammerjs";
 
 import { FxGridDirective } from "./controls/fx-grid.directive";
+import { FxInputComponent } from "./controls/fx-input.component";
+import { ServiceDocument } from "./service-document";
+import { InjectorService } from "./injector.service";
 
 @NgModule({
     imports: [
         BrowserModule,
-        HttpModule,
         UpgradeModule,
+        RouterModule,
+        HttpModule,
+        ReactiveFormsModule,
         MaterialModule.forRoot(),
         FlexLayoutModule.forRoot()
     ],
     declarations: [
-        FxGridDirective
+        FxGridDirective,
+        FxInputComponent
     ],
     exports: [
         BrowserModule,
-        HttpModule,
         UpgradeModule,
+        RouterModule,
+        HttpModule,
+        ReactiveFormsModule,
         MaterialModule,
         FlexLayoutModule,
-        FxGridDirective
+        FxGridDirective,
+        FxInputComponent
+    ],
+    providers: [
+        ServiceDocument
     ],
     schemas: [
         CUSTOM_ELEMENTS_SCHEMA
     ]
 })
-export class FrameworkModule {}
+export class FrameworkModule {
+    constructor(private injector: Injector) {
+        InjectorService.injector = injector;
+    }
+}

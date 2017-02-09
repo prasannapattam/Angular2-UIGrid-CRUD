@@ -1,15 +1,13 @@
-﻿using Angular2UIGridCRUD.Models;
-using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Angular2UIGridCRUD.Controllers
+namespace Angular2UIGridCRUD.Api.Hero
 {
-    public class AppController : Controller
+    public static class HeroData
     {
-        public static List<HeroModel> heroes = new List<HeroModel>()
+        public static List<HeroModel> Heroes = new List<HeroModel>()
         {
                 new HeroModel() { Id = 1, Name = "Captain America", Team = "Avengers", Group = "Marvel"},
                 new HeroModel() { Id = 2, Name = "Hulk", Team = "Avengers", Group = "Marvel"},
@@ -27,18 +25,5 @@ namespace Angular2UIGridCRUD.Controllers
                 new HeroModel() { Id = 14, Name = "Martian Manhunter", Team = "Justice League", Group = "DC"}
         };
 
-        public ServiceDocument<List<HeroModel>> Heroes()
-        {
-            return new ServiceDocument<List<HeroModel>>() { Data = heroes };
-        }
-
-        public ServiceDocument<HeroModel> HeroGet(int id)
-        {
-            ServiceDocument<HeroModel> serviceDocument = new ServiceDocument<HeroModel>();
-            serviceDocument.Data = heroes.Single(h => h.Id == id);
-            serviceDocument.DomainData.Add("team", new List<string>() { "Avengers", "Justice League" });
-
-            return serviceDocument;
-        }
     }
 }

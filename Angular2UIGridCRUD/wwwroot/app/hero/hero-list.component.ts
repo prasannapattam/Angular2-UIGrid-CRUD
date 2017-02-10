@@ -8,7 +8,7 @@ import { GridOptions } from "../framework/controls/grid-options";
 
 
 @Component({
-    selector: "heroes",
+    selector: "hero-list",
     templateUrl: "app/hero/hero-list.component.html"
 })
 export class HeroListComponent implements OnInit  {

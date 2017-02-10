@@ -13,9 +13,13 @@
     <Content Include="wwwroot\app\app.component.html" />
     <Content Include="wwwroot\app\framework\controls\fx-grid.directive.js" />
     <Content Include="wwwroot\app\framework\controls\fx-grid.directive.js.map" />
+    <Content Include="wwwroot\app\framework\controls\fx-grid.directive.ts" />
     <Content Include="wwwroot\app\framework\controls\fx-input.component.js" />
     <Content Include="wwwroot\app\framework\controls\fx-input.component.js.map" />
     <Content Include="wwwroot\app\framework\controls\fx-input.component.ts" />
+    <Content Include="wwwroot\app\framework\controls\grid-options.js" />
+    <Content Include="wwwroot\app\framework\controls\grid-options.js.map" />
+    <Content Include="wwwroot\app\framework\controls\grid-options.ts" />
     <Content Include="wwwroot\app\framework\injector.service.ts" />
     <Content Include="wwwroot\app\hero\hero-list.component.js" />
     <Content Include="wwwroot\app\hero\hero-list.component.js.map" />

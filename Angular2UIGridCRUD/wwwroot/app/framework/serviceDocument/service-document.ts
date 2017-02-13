@@ -1,13 +1,18 @@
 ﻿import { FormGroup, FormControl } from "@angular/forms";
 import { Observable } from "rxjs/Observable";
 import { Http, Response, RequestOptions, URLSearchParams } from "@angular/http";
-import { InjectorService } from "./injector.service";
+import { InjectorService } from "../injector.service";
+
+import { Page } from "./page";
+import { PageAction } from "./pageAction";
 
 export class ServiceDocument<TDataModel> {
     dataModel: TDataModel;
     dataList: TDataModel[];
     domainData: any;
+    page: Page;
     profileForm: FormGroup;
+  
     private http: Http;
 
     constructor() {
@@ -25,6 +30,8 @@ export class ServiceDocument<TDataModel> {
         Object.keys(this.dataModel).forEach((field: string) => {
             controls[field] = new FormControl(this.dataModel[field]);
         });
+
+        controls["currentAction"] = new FormControl();
 
         return new FormGroup(controls);
     }
@@ -49,7 +56,8 @@ export class ServiceDocument<TDataModel> {
 
     save(url: string): Observable<ServiceDocument<TDataModel>> {
         this.dataModel = this.profileForm.value;
-        return this.http.post(url, { dataModel: this.dataModel })
+        
+        return this.http.post(url, { dataModel: this.dataModel, page: { currentAction: this.dataModel["currentAction"] } })
             .map((response: Response) => this.initialize(response.json()))
     }
 

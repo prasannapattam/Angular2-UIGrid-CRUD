@@ -19,7 +19,12 @@ namespace Angular2UIGridCRUD.Api.Hero
                 DataModel = HeroData.Heroes.Single(h => h.Id == id)
             };
             serviceDocument.DomainData.Add("team", new List<string>() { "Avengers", "Justice League" });
-            
+            serviceDocument.Page.AvailableActions = new List<PageAction>()
+            {
+                new PageAction() { Id = "1", Name = "Accept"},
+                new PageAction() { Id = "2", Name = "Decline"},
+            };
+
             return serviceDocument;
         }
 

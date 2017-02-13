@@ -1,7 +1,7 @@
 ﻿import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 
-import { ServiceDocument } from "../framework/service-document";
+import { ServiceDocument } from "../framework/servicedocument/service-document";
 import { Hero } from "./hero";
 import { HeroService } from "./hero.service";
 

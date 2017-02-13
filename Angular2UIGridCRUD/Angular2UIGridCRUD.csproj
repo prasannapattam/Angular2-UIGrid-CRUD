@@ -11,6 +11,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="wwwroot\app\app.component.html" />
+    <Content Include="wwwroot\app\framework\controls\fx-button-list.component.js" />
+    <Content Include="wwwroot\app\framework\controls\fx-button-list.component.js.map" />
+    <Content Include="wwwroot\app\framework\controls\fx-button-list.component.ts" />
     <Content Include="wwwroot\app\framework\controls\fx-grid.directive.js" />
     <Content Include="wwwroot\app\framework\controls\fx-grid.directive.js.map" />
     <Content Include="wwwroot\app\framework\controls\fx-grid.directive.ts" />
@@ -21,6 +24,13 @@
     <Content Include="wwwroot\app\framework\controls\grid-options.js.map" />
     <Content Include="wwwroot\app\framework\controls\grid-options.ts" />
     <Content Include="wwwroot\app\framework\injector.service.ts" />
+    <Content Include="wwwroot\app\framework\serviceDocument\page.ts" />
+    <Content Include="wwwroot\app\framework\serviceDocument\pageAction.js" />
+    <Content Include="wwwroot\app\framework\serviceDocument\pageAction.js.map" />
+    <Content Include="wwwroot\app\framework\serviceDocument\pageAction.ts" />
+    <Content Include="wwwroot\app\framework\serviceDocument\service-document.js" />
+    <Content Include="wwwroot\app\framework\serviceDocument\service-document.js.map" />
+    <Content Include="wwwroot\app\framework\serviceDocument\service-document.ts" />
     <Content Include="wwwroot\app\hero\hero-list.component.js" />
     <Content Include="wwwroot\app\hero\hero-list.component.js.map" />
     <Content Include="wwwroot\app\hero\hero-list.component.ts" />

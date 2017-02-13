@@ -3,7 +3,9 @@
         <fx-input fxFlex="20" placeholder="Name" controlName="name" [formGroup]="serviceDocument.profileForm"></fx-input>
         <fx-input fxFlex="20" placeholder="Team" controlName="team" [formGroup]="serviceDocument.profileForm"></fx-input>
         <fx-input fxFlex="20" placeholder="Group" controlName="group" [formGroup]="serviceDocument.profileForm"></fx-input>
-        <button type="submit">Submit</button>
+    </div>
+    <div fxLayout="row">
+        <fx-button-list [pageActions]="serviceDocument.page.availableActions" [formGroup]="serviceDocument.profileForm"></fx-button-list>
     </div>
 </form>
 

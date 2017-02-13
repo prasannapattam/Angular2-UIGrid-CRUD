@@ -13,8 +13,13 @@ import "hammerjs";
 
 import { FxGridDirective } from "./controls/fx-grid.directive";
 import { FxInputComponent } from "./controls/fx-input.component";
-import { ServiceDocument } from "./service-document";
+import { FxButtonListComponent } from "./controls/fx-button-list.component";
+
 import { InjectorService } from "./injector.service";
+
+import { ServiceDocument } from "./serviceDocument/service-document";
+import { Page } from "./serviceDocument/page";
+import { PageAction } from "./serviceDocument/pageAction";
 
 @NgModule({
     imports: [
@@ -28,7 +33,8 @@ import { InjectorService } from "./injector.service";
     ],
     declarations: [
         FxGridDirective,
-        FxInputComponent
+        FxInputComponent,
+        FxButtonListComponent
     ],
     exports: [
         BrowserModule,
@@ -39,10 +45,13 @@ import { InjectorService } from "./injector.service";
         MaterialModule,
         FlexLayoutModule,
         FxGridDirective,
-        FxInputComponent
+        FxInputComponent,
+        FxButtonListComponent
     ],
     providers: [
-        ServiceDocument
+        ServiceDocument,
+        Page,
+        PageAction
     ],
     schemas: [
         CUSTOM_ELEMENTS_SCHEMA

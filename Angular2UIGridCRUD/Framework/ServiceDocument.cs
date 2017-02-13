@@ -27,6 +27,8 @@ namespace Angular2UIGridCRUD.Framework
 
         public Dictionary<string, object> DomainData { get; } = new Dictionary<string, object>();
 
+        public Page Page { get; set; } = new Page();
+
         public ServiceDocument<TDataModel> List()
         {
             //this.DataList = (List<HeroModel>) ((object) HeroData.Heroes);

@@ -3,7 +3,7 @@ import { Router } from "@angular/router";
 import { Http, Response, RequestOptions, URLSearchParams } from "@angular/http";
 import { Observable } from "rxjs/Observable";
 
-import { ServiceDocument } from "../framework/service-document";
+import { ServiceDocument } from "../framework/servicedocument/service-document";
 import { Hero } from "./hero";
 
 @Injectable()

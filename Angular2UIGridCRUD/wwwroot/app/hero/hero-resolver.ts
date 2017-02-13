@@ -4,7 +4,7 @@ import { Resolve, ActivatedRouteSnapshot } from "@angular/router";
 import { Observable } from "rxjs/Observable";
 
 import { HeroService } from "./hero.service";
-import { ServiceDocument } from "../framework/service-document";
+import { ServiceDocument } from "../framework/servicedocument/service-document";
 import { Hero } from "./hero";
 
 @Injectable()

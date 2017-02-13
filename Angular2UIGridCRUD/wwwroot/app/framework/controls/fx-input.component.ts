@@ -1,4 +1,5 @@
 ﻿import { Component, Input } from "@angular/core";
+import { FormGroup } from "@angular/forms";
 
 @Component({
     selector: "fx-input",
@@ -11,5 +12,5 @@
 export class FxInputComponent  {
     @Input() controlName: string;
     @Input() placeholder: string;
-    @Input() formGroup: string;
+    @Input() formGroup: FormGroup;
 }

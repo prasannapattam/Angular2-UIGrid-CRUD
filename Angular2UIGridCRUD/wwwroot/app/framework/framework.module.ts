@@ -29,7 +29,7 @@ import { PageAction } from "./serviceDocument/pageAction";
         HttpModule,
         ReactiveFormsModule,
         MaterialModule.forRoot(),
-        FlexLayoutModule.forRoot()
+        FlexLayoutModule
     ],
     declarations: [
         FxGridDirective,

@@ -1,12 +1,15 @@
 /**
- * @license Angular v3.4.5
- * (c) 2010-2016 Google, Inc. https://angular.io/
+ * @license Angular v4.0.0-beta.8
+ * (c) 2010-2017 Google, Inc. https://angular.io/
  * License: MIT
  */(function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/common'), require('@angular/core'), require('rxjs/BehaviorSubject'), require('rxjs/Subject'), require('rxjs/observable/from'), require('rxjs/observable/of'), require('rxjs/operator/concatMap'), require('rxjs/operator/every'), require('rxjs/operator/first'), require('rxjs/operator/map'), require('rxjs/operator/mergeMap'), require('rxjs/operator/reduce'), require('rxjs/Observable'), require('rxjs/operator/catch'), require('rxjs/operator/concatAll'), require('rxjs/util/EmptyError'), require('rxjs/observable/fromPromise'), require('rxjs/operator/last'), require('rxjs/operator/mergeAll'), require('@angular/platform-browser'), require('rxjs/operator/filter')) :
     typeof define === 'function' && define.amd ? define(['exports', '@angular/common', '@angular/core', 'rxjs/BehaviorSubject', 'rxjs/Subject', 'rxjs/observable/from', 'rxjs/observable/of', 'rxjs/operator/concatMap', 'rxjs/operator/every', 'rxjs/operator/first', 'rxjs/operator/map', 'rxjs/operator/mergeMap', 'rxjs/operator/reduce', 'rxjs/Observable', 'rxjs/operator/catch', 'rxjs/operator/concatAll', 'rxjs/util/EmptyError', 'rxjs/observable/fromPromise', 'rxjs/operator/last', 'rxjs/operator/mergeAll', '@angular/platform-browser', 'rxjs/operator/filter'], factory) :
     (factory((global.ng = global.ng || {}, global.ng.router = global.ng.router || {}),global.ng.common,global.ng.core,global.Rx,global.Rx,global.Rx.Observable,global.Rx.Observable,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx,global.Rx.Observable,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.ng.platformBrowser,global.Rx.Observable.prototype));
 }(this, function (exports,_angular_common,_angular_core,rxjs_BehaviorSubject,rxjs_Subject,rxjs_observable_from,rxjs_observable_of,rxjs_operator_concatMap,rxjs_operator_every,rxjs_operator_first,rxjs_operator_map,rxjs_operator_mergeMap,rxjs_operator_reduce,rxjs_Observable,rxjs_operator_catch,rxjs_operator_concatAll,rxjs_util_EmptyError,rxjs_observable_fromPromise,l,rxjs_operator_mergeAll,_angular_platformBrowser,rxjs_operator_filter) { 'use strict';
+
+    var /** @type {?} */ isPromise = _angular_core.__core_private__.isPromise;
+    var /** @type {?} */ isObservable = _angular_core.__core_private__.isObservable;
 
     /**
      * @license
@@ -15,33 +18,29 @@
      * Use of this source code is governed by an MIT-style license that can be
      * found in the LICENSE file at https://angular.io/license
      */
-    var __extends = (this && this.__extends) || function (d, b) {
-        for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
     /**
      * @whatItDoes Name of the primary outlet.
      *
      * @stable
      */
     var /** @type {?} */ PRIMARY_OUTLET = 'primary';
-    var NavigationCancelingError = (function (_super) {
-        __extends(NavigationCancelingError, _super);
-        /**
-         * @param {?} message
-         */
-        function NavigationCancelingError(message) {
-            _super.call(this, message);
-            this.message = message;
-            this.stack = (new Error(message)).stack;
-        }
-        /**
-         * @return {?}
-         */
-        NavigationCancelingError.prototype.toString = function () { return this.message; };
-        return NavigationCancelingError;
-    }(Error));
+    var /** @type {?} */ NAVIGATION_CANCELING_ERROR = 'ngNavigationCancelingError';
+    /**
+     * @param {?} message
+     * @return {?}
+     */
+    function navigationCancelingError(message) {
+        var /** @type {?} */ error = Error('NavigationCancelingError: ' + message);
+        ((error))[NAVIGATION_CANCELING_ERROR] = true;
+        return error;
+    }
+    /**
+     * @param {?} error
+     * @return {?}
+     */
+    function isNavigationCancelingError(error) {
+        return ((error))[NAVIGATION_CANCELING_ERROR];
+    }
     /**
      * @param {?} segments
      * @param {?} segmentGroup
@@ -138,12 +137,12 @@
      */
     function merge(m1, m2) {
         var /** @type {?} */ m = {};
-        for (var attr in m1) {
+        for (var /** @type {?} */ attr in m1) {
             if (m1.hasOwnProperty(attr)) {
                 m[attr] = m1[attr];
             }
         }
-        for (var attr in m2) {
+        for (var /** @type {?} */ attr in m2) {
             if (m2.hasOwnProperty(attr)) {
                 m[attr] = m2[attr];
             }
@@ -156,7 +155,7 @@
      * @return {?}
      */
     function forEach(map, callback) {
-        for (var prop in map) {
+        for (var /** @type {?} */ prop in map) {
             if (map.hasOwnProperty(prop)) {
                 callback(map[prop], prop);
             }
@@ -206,19 +205,20 @@
      * @return {?}
      */
     function wrapIntoObservable(value) {
-        if (value instanceof rxjs_Observable.Observable) {
+        if (isObservable(value)) {
             return value;
         }
-        if (value instanceof Promise) {
+        if (isPromise(value)) {
             return rxjs_observable_fromPromise.fromPromise(value);
         }
         return rxjs_observable_of.of(value);
     }
 
     /**
+     * @docsNotRequired
      * @experimental
      */
-    var /** @type {?} */ ROUTES = new _angular_core.OpaqueToken('ROUTES');
+    var /** @type {?} */ ROUTES = new _angular_core.InjectionToken('ROUTES');
     var LoadedRouterConfig = (function () {
         /**
          * @param {?} routes
@@ -310,7 +310,7 @@
             return false;
         if (container.numberOfChildren !== containee.numberOfChildren)
             return false;
-        for (var c in containee.children) {
+        for (var /** @type {?} */ c in containee.children) {
             if (!container.children[c])
                 return false;
             if (!equalSegmentGroups(container.children[c], containee.children[c]))
@@ -353,7 +353,7 @@
         else if (container.segments.length === containeePaths.length) {
             if (!equalPath(container.segments, containeePaths))
                 return false;
-            for (var c in containee.children) {
+            for (var /** @type {?} */ c in containee.children) {
                 if (!container.children[c])
                     return false;
                 if (!containsSegmentGroup(container.children[c], containee.children[c]))
@@ -659,7 +659,7 @@
                     return [serializeSegment(segment.children[PRIMARY_OUTLET], false)];
                 }
                 else {
-                    return [(k + ":" + serializeSegment(v, false))];
+                    return [k + ":" + serializeSegment(v, false)];
                 }
             });
             return serializePaths(segment) + "/(" + children.join('//') + ")";
@@ -694,7 +694,7 @@
      * @return {?}
      */
     function serializeParams(params) {
-        return pairs(params).map(function (p) { return (";" + encode(p.first) + "=" + encode(p.second)); }).join('');
+        return pairs(params).map(function (p) { return ";" + encode(p.first) + "=" + encode(p.second); }).join('');
     }
     /**
      * @param {?} params
@@ -703,7 +703,7 @@
     function serializeQueryParams(params) {
         var /** @type {?} */ strParams = Object.keys(params).map(function (name) {
             var /** @type {?} */ value = params[name];
-            return Array.isArray(value) ? value.map(function (v) { return (encode(name) + "=" + encode(v)); }).join('&') :
+            return Array.isArray(value) ? value.map(function (v) { return encode(name) + "=" + encode(v); }).join('&') :
                 encode(name) + "=" + encode(value);
         });
         return strParams.length ? "?" + strParams.join("&") : '';
@@ -725,7 +725,7 @@
      */
     function pairs(obj) {
         var /** @type {?} */ res = [];
-        for (var prop in obj) {
+        for (var /** @type {?} */ prop in obj) {
             if (obj.hasOwnProperty(prop)) {
                 res.push(new Pair(prop, obj[prop]));
             }
@@ -1017,7 +1017,7 @@
      * @return {?}
      */
     function canLoadFails(route) {
-        return new rxjs_Observable.Observable(function (obs) { return obs.error(new NavigationCancelingError("Cannot load children because the guard of the route \"path: '" + route.path + "'\" returned false")); });
+        return new rxjs_Observable.Observable(function (obs) { return obs.error(navigationCancelingError("Cannot load children because the guard of the route \"path: '" + route.path + "'\" returned false")); });
     }
     /**
      * @param {?} injector
@@ -1824,7 +1824,7 @@
      * Use of this source code is governed by an MIT-style license that can be
      * found in the LICENSE file at https://angular.io/license
      */
-    var __extends$1 = (this && this.__extends) || function (d, b) {
+    var __extends = (this && this.__extends) || function (d, b) {
         for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -1857,16 +1857,17 @@
      * \@stable
      */
     var RouterState = (function (_super) {
-        __extends$1(RouterState, _super);
+        __extends(RouterState, _super);
         /**
          * \@internal
          * @param {?} root
          * @param {?} snapshot
          */
         function RouterState(root, snapshot) {
-            _super.call(this, root);
-            this.snapshot = snapshot;
-            setRouterStateSnapshot(this, root);
+            var _this = _super.call(this, root) || this;
+            _this.snapshot = snapshot;
+            setRouterStateSnapshot(_this, root);
+            return _this;
         }
         /**
          * @return {?}
@@ -2176,16 +2177,17 @@
      * \@stable
      */
     var RouterStateSnapshot = (function (_super) {
-        __extends$1(RouterStateSnapshot, _super);
+        __extends(RouterStateSnapshot, _super);
         /**
          * \@internal
          * @param {?} url
          * @param {?} root
          */
         function RouterStateSnapshot(url, root) {
-            _super.call(this, root);
-            this.url = url;
-            setRouterStateSnapshot(this, root);
+            var _this = _super.call(this, root) || this;
+            _this.url = url;
+            setRouterStateSnapshot(_this, root);
+            return _this;
         }
         /**
          * @return {?}
@@ -2249,7 +2251,10 @@
      * @return {?}
      */
     function equalParamsAndUrlSegments(a, b) {
-        return shallowEqual(a.params, b.params) && equalSegments(a.url, b.url);
+        var /** @type {?} */ equalUrlParams = shallowEqual(a.params, b.params) && equalSegments(a.url, b.url);
+        var /** @type {?} */ parentsMismatch = !a.parent !== !b.parent;
+        return equalUrlParams && !parentsMismatch &&
+            (!a.parent || equalParamsAndUrlSegments(a.parent, b.parent));
     }
 
     /**
@@ -2529,9 +2534,9 @@
      */
     function getOutlets(commands) {
         if (!(typeof commands[0] === 'object'))
-            return (_a = {}, _a[PRIMARY_OUTLET] = commands, _a);
+            return _a = {}, _a[PRIMARY_OUTLET] = commands, _a;
         if (commands[0].outlets === undefined)
-            return (_b = {}, _b[PRIMARY_OUTLET] = commands, _b);
+            return _b = {}, _b[PRIMARY_OUTLET] = commands, _b;
         return commands[0].outlets;
         var _a, _b;
     }
@@ -3105,7 +3110,7 @@
      * found in the LICENSE file at https://angular.io/license
      */
     /**
-     * \@whatItDoes Provides a way to migrate Angular 1 applications to Angular 2.
+     * \@whatItDoes Provides a way to migrate AngularJS applications to Angular.
      *
      * \@experimental
      * @abstract
@@ -3374,7 +3379,7 @@
              */
             this.navigated = false;
             /**
-             * Extracts and merges URLs. Used for Angular 1 to Angular 2 migrations.
+             * Extracts and merges URLs. Used for AngularJS to Angular migrations.
              */
             this.urlHandlingStrategy = new DefaultUrlHandlingStrategy();
             this.routeReuseStrategy = new DefaultRouteReuseStrategy();
@@ -3403,7 +3408,9 @@
          */
         Router.prototype.initialNavigation = function () {
             this.setUpLocationChangeListener();
-            this.navigateByUrl(this.location.path(true), { replaceUrl: true });
+            if (this.navigationId === 0) {
+                this.navigateByUrl(this.location.path(true), { replaceUrl: true });
+            }
         };
         /**
          * Sets up the location change listener.
@@ -3528,10 +3535,28 @@
          * @return {?}
          */
         Router.prototype.createUrlTree = function (commands, _a) {
-            var _b = _a === void 0 ? {} : _a, relativeTo = _b.relativeTo, queryParams = _b.queryParams, fragment = _b.fragment, preserveQueryParams = _b.preserveQueryParams, preserveFragment = _b.preserveFragment;
+            var _b = _a === void 0 ? {} : _a, relativeTo = _b.relativeTo, queryParams = _b.queryParams, fragment = _b.fragment, preserveQueryParams = _b.preserveQueryParams, queryParamsHandling = _b.queryParamsHandling, preserveFragment = _b.preserveFragment;
+            if (_angular_core.isDevMode() && preserveQueryParams && (console) && (console.warn)) {
+                console.warn('preserveQueryParams is deprecated, use queryParamsHandling instead.');
+            }
             var /** @type {?} */ a = relativeTo || this.routerState.root;
-            var /** @type {?} */ q = preserveQueryParams ? this.currentUrlTree.queryParams : queryParams;
             var /** @type {?} */ f = preserveFragment ? this.currentUrlTree.fragment : fragment;
+            var /** @type {?} */ q = null;
+            if (queryParamsHandling) {
+                switch (queryParamsHandling) {
+                    case 'merge':
+                        q = merge(this.currentUrlTree.queryParams, queryParams);
+                        break;
+                    case 'preserve':
+                        q = this.currentUrlTree.queryParams;
+                        break;
+                    default:
+                        q = queryParams;
+                }
+            }
+            else {
+                q = preserveQueryParams ? this.currentUrlTree.queryParams : queryParams;
+            }
             return createUrlTree(a, this.currentUrlTree, commands, q, f);
         };
         /**
@@ -3817,8 +3842,8 @@
                     navigationIsSuccessful = true;
                 })
                     .then(function () {
-                    _this.navigated = true;
                     if (navigationIsSuccessful) {
+                        _this.navigated = true;
                         _this.routerEvents.next(new NavigationEnd(id, _this.serializeUrl(url), _this.serializeUrl(_this.currentUrlTree)));
                         resolvePromise(true);
                     }
@@ -3828,7 +3853,7 @@
                         resolvePromise(false);
                     }
                 }, function (e) {
-                    if (e instanceof NavigationCancelingError) {
+                    if (isNavigationCancelingError(e)) {
                         _this.resetUrlToCurrentUrlTree();
                         _this.navigated = true;
                         _this.routerEvents.next(new NavigationCancel(id, _this.serializeUrl(url), e.message));
@@ -4073,7 +4098,7 @@
                 .filter(function (_) { return _ !== null; });
             return andObservables(rxjs_operator_map.map.call(rxjs_observable_from.from(canActivateChildGuards), function (d) {
                 var /** @type {?} */ obs = rxjs_operator_map.map.call(rxjs_observable_from.from(d.guards), function (c) {
-                    var /** @type {?} */ guard = _this.getToken(c, c.node);
+                    var /** @type {?} */ guard = _this.getToken(c, d.node);
                     var /** @type {?} */ observable;
                     if (guard.canActivateChild) {
                         observable = wrapIntoObservable(guard.canActivateChild(future, _this.future));
@@ -4110,10 +4135,11 @@
                 var /** @type {?} */ guard = _this.getToken(c, curr);
                 var /** @type {?} */ observable;
                 if (guard.canDeactivate) {
-                    observable = wrapIntoObservable(guard.canDeactivate(component, curr, _this.curr));
+                    observable =
+                        wrapIntoObservable(guard.canDeactivate(component, curr, _this.curr, _this.future));
                 }
                 else {
-                    observable = wrapIntoObservable(guard(component, curr, _this.curr));
+                    observable = wrapIntoObservable(guard(component, curr, _this.curr, _this.future));
                 }
                 return rxjs_operator_first.first.call(observable);
             });
@@ -4480,10 +4506,23 @@
      * ```
      * RouterLink will use these to generate this link: `/user/bob#education?debug=true`.
      *
-     * You can also tell the directive to preserve the current query params and fragment:
+     * (Deprecated in v4.0.0 use `queryParamsHandling` instead) You can also tell the
+     * directive to preserve the current query params and fragment:
      *
      * ```
      * <a [routerLink]="['/user/bob']" preserveQueryParams preserveFragment>
+     *   link to user component
+     * </a>
+     * ```
+     *
+     * You can tell the directive to how to handle queryParams, available options are:
+     *  - 'merge' merge the queryParams into the current queryParams
+     *  - 'preserve' prserve the current queryParams
+     *  - default / '' use the queryParams only
+     *  same options for {\@link NavigationExtras.queryParamsHandling}
+     *
+     * ```
+     * <a [routerLink]="['/user/bob']" [queryParams]="{debug: true}" queryParamsHandling="merge">
      *   link to user component
      * </a>
      * ```
@@ -4495,7 +4534,6 @@
      * Then the following link `<a [routerLink]="['/user/jim']">Jim</a>` will generate the link
      * `/user/(jim//aux:team)`.
      *
-     * \@selector ':not(a)[routerLink]'
      * \@ngModule RouterModule
      *
      * See {\@link Router.createUrlTree} for more information.
@@ -4506,11 +4544,17 @@
         /**
          * @param {?} router
          * @param {?} route
+         * @param {?} tabIndex
+         * @param {?} renderer
+         * @param {?} el
          */
-        function RouterLink(router, route) {
+        function RouterLink(router, route, tabIndex, renderer, el) {
             this.router = router;
             this.route = route;
             this.commands = [];
+            if (tabIndex == null) {
+                renderer.setElementAttribute(el.nativeElement, 'tabindex', '0');
+            }
         }
         Object.defineProperty(RouterLink.prototype, "routerLink", {
             /**
@@ -4524,6 +4568,21 @@
                 else {
                     this.commands = [];
                 }
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(RouterLink.prototype, "preserveQueryParams", {
+            /**
+             * @deprecated 4.0.0 use `queryParamsHandling` instead.
+             * @param {?} value
+             * @return {?}
+             */
+            set: function (value) {
+                if (_angular_core.isDevMode() && (console) && (console.warn)) {
+                    console.warn('preserveQueryParams is deprecated!, use queryParamsHandling instead.');
+                }
+                this.preserve = value;
             },
             enumerable: true,
             configurable: true
@@ -4548,39 +4607,43 @@
                     relativeTo: this.route,
                     queryParams: this.queryParams,
                     fragment: this.fragment,
-                    preserveQueryParams: attrBoolValue(this.preserveQueryParams),
+                    preserveQueryParams: attrBoolValue(this.preserve),
+                    queryParamsHandling: this.queryParamsHandling,
                     preserveFragment: attrBoolValue(this.preserveFragment),
                 });
             },
             enumerable: true,
             configurable: true
         });
-        RouterLink.decorators = [
-            { type: _angular_core.Directive, args: [{ selector: ':not(a)[routerLink]' },] },
-        ];
-        /** @nocollapse */
-        RouterLink.ctorParameters = function () { return [
-            { type: Router, },
-            { type: ActivatedRoute, },
-        ]; };
-        RouterLink.propDecorators = {
-            'queryParams': [{ type: _angular_core.Input },],
-            'fragment': [{ type: _angular_core.Input },],
-            'preserveQueryParams': [{ type: _angular_core.Input },],
-            'preserveFragment': [{ type: _angular_core.Input },],
-            'skipLocationChange': [{ type: _angular_core.Input },],
-            'replaceUrl': [{ type: _angular_core.Input },],
-            'routerLink': [{ type: _angular_core.Input },],
-            'onClick': [{ type: _angular_core.HostListener, args: ['click',] },],
-        };
         return RouterLink;
     }());
+    RouterLink.decorators = [
+        { type: _angular_core.Directive, args: [{ selector: ':not(a)[routerLink]' },] },
+    ];
+    /** @nocollapse */
+    RouterLink.ctorParameters = function () { return [
+        { type: Router, },
+        { type: ActivatedRoute, },
+        { type: undefined, decorators: [{ type: _angular_core.Attribute, args: ['tabindex',] },] },
+        { type: _angular_core.Renderer, },
+        { type: _angular_core.ElementRef, },
+    ]; };
+    RouterLink.propDecorators = {
+        'queryParams': [{ type: _angular_core.Input },],
+        'fragment': [{ type: _angular_core.Input },],
+        'queryParamsHandling': [{ type: _angular_core.Input },],
+        'preserveFragment': [{ type: _angular_core.Input },],
+        'skipLocationChange': [{ type: _angular_core.Input },],
+        'replaceUrl': [{ type: _angular_core.Input },],
+        'routerLink': [{ type: _angular_core.Input },],
+        'preserveQueryParams': [{ type: _angular_core.Input },],
+        'onClick': [{ type: _angular_core.HostListener, args: ['click',] },],
+    };
     /**
      * \@whatItDoes Lets you link to specific parts of your app.
      *
      * See {\@link RouterLink} for more information.
      *
-     * \@selector 'a[routerLink]'
      * \@ngModule RouterModule
      *
      * \@stable
@@ -4615,6 +4678,20 @@
                 else {
                     this.commands = [];
                 }
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(RouterLinkWithHref.prototype, "preserveQueryParams", {
+            /**
+             * @param {?} value
+             * @return {?}
+             */
+            set: function (value) {
+                if (_angular_core.isDevMode() && (console) && (console.warn)) {
+                    console.warn('preserveQueryParams is deprecated, use queryParamsHandling instead.');
+                }
+                this.preserve = value;
             },
             enumerable: true,
             configurable: true
@@ -4663,36 +4740,38 @@
                     relativeTo: this.route,
                     queryParams: this.queryParams,
                     fragment: this.fragment,
-                    preserveQueryParams: attrBoolValue(this.preserveQueryParams),
+                    preserveQueryParams: attrBoolValue(this.preserve),
+                    queryParamsHandling: this.queryParamsHandling,
                     preserveFragment: attrBoolValue(this.preserveFragment),
                 });
             },
             enumerable: true,
             configurable: true
         });
-        RouterLinkWithHref.decorators = [
-            { type: _angular_core.Directive, args: [{ selector: 'a[routerLink]' },] },
-        ];
-        /** @nocollapse */
-        RouterLinkWithHref.ctorParameters = function () { return [
-            { type: Router, },
-            { type: ActivatedRoute, },
-            { type: _angular_common.LocationStrategy, },
-        ]; };
-        RouterLinkWithHref.propDecorators = {
-            'target': [{ type: _angular_core.HostBinding, args: ['attr.target',] }, { type: _angular_core.Input },],
-            'queryParams': [{ type: _angular_core.Input },],
-            'fragment': [{ type: _angular_core.Input },],
-            'preserveQueryParams': [{ type: _angular_core.Input },],
-            'preserveFragment': [{ type: _angular_core.Input },],
-            'skipLocationChange': [{ type: _angular_core.Input },],
-            'replaceUrl': [{ type: _angular_core.Input },],
-            'href': [{ type: _angular_core.HostBinding },],
-            'routerLink': [{ type: _angular_core.Input },],
-            'onClick': [{ type: _angular_core.HostListener, args: ['click', ['$event.button', '$event.ctrlKey', '$event.metaKey'],] },],
-        };
         return RouterLinkWithHref;
     }());
+    RouterLinkWithHref.decorators = [
+        { type: _angular_core.Directive, args: [{ selector: 'a[routerLink]' },] },
+    ];
+    /** @nocollapse */
+    RouterLinkWithHref.ctorParameters = function () { return [
+        { type: Router, },
+        { type: ActivatedRoute, },
+        { type: _angular_common.LocationStrategy, },
+    ]; };
+    RouterLinkWithHref.propDecorators = {
+        'target': [{ type: _angular_core.HostBinding, args: ['attr.target',] }, { type: _angular_core.Input },],
+        'queryParams': [{ type: _angular_core.Input },],
+        'fragment': [{ type: _angular_core.Input },],
+        'queryParamsHandling': [{ type: _angular_core.Input },],
+        'preserveFragment': [{ type: _angular_core.Input },],
+        'skipLocationChange': [{ type: _angular_core.Input },],
+        'replaceUrl': [{ type: _angular_core.Input },],
+        'href': [{ type: _angular_core.HostBinding },],
+        'routerLink': [{ type: _angular_core.Input },],
+        'preserveQueryParams': [{ type: _angular_core.Input },],
+        'onClick': [{ type: _angular_core.HostListener, args: ['click', ['$event.button', '$event.ctrlKey', '$event.metaKey'],] },],
+    };
     /**
      * @param {?} s
      * @return {?}
@@ -4759,7 +4838,6 @@
      * This will set the active-link class on the div tag if the url is either '/user/jim' or
      * '/user/bob'.
      *
-     * \@selector ':not(a)[routerLink]'
      * \@ngModule RouterModule
      *
      * \@stable
@@ -4856,27 +4934,27 @@
             return this.links.some(this.isLinkActive(this.router)) ||
                 this.linksWithHrefs.some(this.isLinkActive(this.router));
         };
-        RouterLinkActive.decorators = [
-            { type: _angular_core.Directive, args: [{
-                        selector: '[routerLinkActive]',
-                        exportAs: 'routerLinkActive',
-                    },] },
-        ];
-        /** @nocollapse */
-        RouterLinkActive.ctorParameters = function () { return [
-            { type: Router, },
-            { type: _angular_core.ElementRef, },
-            { type: _angular_core.Renderer, },
-            { type: _angular_core.ChangeDetectorRef, },
-        ]; };
-        RouterLinkActive.propDecorators = {
-            'links': [{ type: _angular_core.ContentChildren, args: [RouterLink, { descendants: true },] },],
-            'linksWithHrefs': [{ type: _angular_core.ContentChildren, args: [RouterLinkWithHref, { descendants: true },] },],
-            'routerLinkActiveOptions': [{ type: _angular_core.Input },],
-            'routerLinkActive': [{ type: _angular_core.Input },],
-        };
         return RouterLinkActive;
     }());
+    RouterLinkActive.decorators = [
+        { type: _angular_core.Directive, args: [{
+                    selector: '[routerLinkActive]',
+                    exportAs: 'routerLinkActive',
+                },] },
+    ];
+    /** @nocollapse */
+    RouterLinkActive.ctorParameters = function () { return [
+        { type: Router, },
+        { type: _angular_core.ElementRef, },
+        { type: _angular_core.Renderer, },
+        { type: _angular_core.ChangeDetectorRef, },
+    ]; };
+    RouterLinkActive.propDecorators = {
+        'links': [{ type: _angular_core.ContentChildren, args: [RouterLink, { descendants: true },] },],
+        'linksWithHrefs': [{ type: _angular_core.ContentChildren, args: [RouterLinkWithHref, { descendants: true },] },],
+        'routerLinkActiveOptions': [{ type: _angular_core.Input },],
+        'routerLinkActive': [{ type: _angular_core.Input },],
+    };
 
     /**
      * \@whatItDoes Acts as a placeholder that Angular dynamically fills based on the current router
@@ -4898,7 +4976,6 @@
      *   (activate)='onActivate($event)'
      *   (deactivate)='onDeactivate($event)'></router-outlet>
      * ```
-     * \@selector 'a[routerLink]'
      * \@ngModule RouterModule
      *
      * \@stable
@@ -5027,22 +5104,22 @@
             this.activated.changeDetectorRef.detectChanges();
             this.activateEvents.emit(this.activated.instance);
         };
-        RouterOutlet.decorators = [
-            { type: _angular_core.Directive, args: [{ selector: 'router-outlet' },] },
-        ];
-        /** @nocollapse */
-        RouterOutlet.ctorParameters = function () { return [
-            { type: RouterOutletMap, },
-            { type: _angular_core.ViewContainerRef, },
-            { type: _angular_core.ComponentFactoryResolver, },
-            { type: undefined, decorators: [{ type: _angular_core.Attribute, args: ['name',] },] },
-        ]; };
-        RouterOutlet.propDecorators = {
-            'activateEvents': [{ type: _angular_core.Output, args: ['activate',] },],
-            'deactivateEvents': [{ type: _angular_core.Output, args: ['deactivate',] },],
-        };
         return RouterOutlet;
     }());
+    RouterOutlet.decorators = [
+        { type: _angular_core.Directive, args: [{ selector: 'router-outlet' },] },
+    ];
+    /** @nocollapse */
+    RouterOutlet.ctorParameters = function () { return [
+        { type: RouterOutletMap, },
+        { type: _angular_core.ViewContainerRef, },
+        { type: _angular_core.ComponentFactoryResolver, },
+        { type: undefined, decorators: [{ type: _angular_core.Attribute, args: ['name',] },] },
+    ]; };
+    RouterOutlet.propDecorators = {
+        'activateEvents': [{ type: _angular_core.Output, args: ['activate',] },],
+        'deactivateEvents': [{ type: _angular_core.Output, args: ['deactivate',] },],
+    };
 
     /**
      * @license
@@ -5216,7 +5293,7 @@
             var /** @type {?} */ res = [];
             for (var _i = 0, routes_1 = routes; _i < routes_1.length; _i++) {
                 var c = routes_1[_i];
-                // we already have the config loaded, just recurce
+                // we already have the config loaded, just recurse
                 if (c.loadChildren && !c.canLoad && ((c))._loadedConfig) {
                     var /** @type {?} */ childConfig = ((c))._loadedConfig;
                     res.push(this.processRoutes(childConfig.injector, childConfig.routes));
@@ -5246,19 +5323,19 @@
                 });
             });
         };
-        RouterPreloader.decorators = [
-            { type: _angular_core.Injectable },
-        ];
-        /** @nocollapse */
-        RouterPreloader.ctorParameters = function () { return [
-            { type: Router, },
-            { type: _angular_core.NgModuleFactoryLoader, },
-            { type: _angular_core.Compiler, },
-            { type: _angular_core.Injector, },
-            { type: PreloadingStrategy, },
-        ]; };
         return RouterPreloader;
     }());
+    RouterPreloader.decorators = [
+        { type: _angular_core.Injectable },
+    ];
+    /** @nocollapse */
+    RouterPreloader.ctorParameters = function () { return [
+        { type: Router, },
+        { type: _angular_core.NgModuleFactoryLoader, },
+        { type: _angular_core.Compiler, },
+        { type: _angular_core.Injector, },
+        { type: PreloadingStrategy, },
+    ]; };
 
     /**
      * @whatItDoes Contains a list of directives
@@ -5269,11 +5346,11 @@
      * @whatItDoes Is used in DI to configure the router.
      * @stable
      */
-    var /** @type {?} */ ROUTER_CONFIGURATION = new _angular_core.OpaqueToken('ROUTER_CONFIGURATION');
+    var /** @type {?} */ ROUTER_CONFIGURATION = new _angular_core.InjectionToken('ROUTER_CONFIGURATION');
     /**
      * @docsNotRequired
      */
-    var /** @type {?} */ ROUTER_FORROOT_GUARD = new _angular_core.OpaqueToken('ROUTER_FORROOT_GUARD');
+    var /** @type {?} */ ROUTER_FORROOT_GUARD = new _angular_core.InjectionToken('ROUTER_FORROOT_GUARD');
     var /** @type {?} */ ROUTER_PROVIDERS = [
         _angular_common.Location,
         { provide: UrlSerializer, useClass: DefaultUrlSerializer },
@@ -5342,7 +5419,7 @@
      * In addition, we often want to split applications into multiple bundles and load them on demand.
      * Doing this transparently is not trivial.
      *
-     * The Angular 2 router solves these problems. Using the router, you can declaratively specify
+     * The Angular router solves these problems. Using the router, you can declaratively specify
      * application states, manage state transitions while taking care of the URL, and load bundles on
      * demand.
      *
@@ -5408,15 +5485,15 @@
         RouterModule.forChild = function (routes) {
             return { ngModule: RouterModule, providers: [provideRoutes(routes)] };
         };
-        RouterModule.decorators = [
-            { type: _angular_core.NgModule, args: [{ declarations: ROUTER_DIRECTIVES, exports: ROUTER_DIRECTIVES },] },
-        ];
-        /** @nocollapse */
-        RouterModule.ctorParameters = function () { return [
-            { type: undefined, decorators: [{ type: _angular_core.Optional }, { type: _angular_core.Inject, args: [ROUTER_FORROOT_GUARD,] },] },
-        ]; };
         return RouterModule;
     }());
+    RouterModule.decorators = [
+        { type: _angular_core.NgModule, args: [{ declarations: ROUTER_DIRECTIVES, exports: ROUTER_DIRECTIVES },] },
+    ];
+    /** @nocollapse */
+    RouterModule.ctorParameters = function () { return [
+        { type: undefined, decorators: [{ type: _angular_core.Optional }, { type: _angular_core.Inject, args: [ROUTER_FORROOT_GUARD,] },] },
+    ]; };
     /**
      * @param {?} platformLocationStrategy
      * @param {?} baseHref
@@ -5532,7 +5609,7 @@
      *
      * @experimental
      */
-    var /** @type {?} */ ROUTER_INITIALIZER = new _angular_core.OpaqueToken('Router Initializer');
+    var /** @type {?} */ ROUTER_INITIALIZER = new _angular_core.InjectionToken('Router Initializer');
     /**
      * @return {?}
      */
@@ -5550,7 +5627,7 @@
     /**
      * @stable
      */
-    var /** @type {?} */ VERSION = new _angular_core.Version('3.4.5');
+    var /** @type {?} */ VERSION = new _angular_core.Version('4.0.0-beta.8');
 
     var /** @type {?} */ __router_private__ = {
         ROUTER_PROVIDERS: ROUTER_PROVIDERS,
@@ -5569,6 +5646,7 @@
     exports.NavigationStart = NavigationStart;
     exports.Router = Router;
     exports.RoutesRecognized = RoutesRecognized;
+    exports.ROUTES = ROUTES;
     exports.ROUTER_CONFIGURATION = ROUTER_CONFIGURATION;
     exports.ROUTER_INITIALIZER = ROUTER_INITIALIZER;
     exports.RouterModule = RouterModule;
@@ -5591,5 +5669,16 @@
     exports.UrlTree = UrlTree;
     exports.VERSION = VERSION;
     exports.__router_private__ = __router_private__;
+    exports.ɵa = ROUTER_FORROOT_GUARD;
+    exports.ɵb = ROUTER_PROVIDERS;
+    exports.ɵh = initialRouterNavigation;
+    exports.ɵe = provideForRootGuard;
+    exports.ɵd = provideLocationStrategy;
+    exports.ɵi = provideRouterInitializer;
+    exports.ɵg = rootRoute;
+    exports.ɵc = routerNgProbeToken;
+    exports.ɵf = setupRouter;
+    exports.ɵj = Tree;
+    exports.ɵk = TreeNode;
 
 }));

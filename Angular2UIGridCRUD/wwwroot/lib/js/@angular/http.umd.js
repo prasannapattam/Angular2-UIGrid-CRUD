@@ -1,5 +1,5 @@
 /**
- * @license Angular v4.0.0-beta.8
+ * @license Angular v4.0.0-rc.5
  * (c) 2010-2017 Google, Inc. https://angular.io/
  * License: MIT
  */
@@ -9,6 +9,11 @@
     (factory((global.ng = global.ng || {}, global.ng.http = global.ng.http || {}),global.ng.core,global.Rx,global.ng.platformBrowser));
 }(this, function (exports,_angular_core,rxjs_Observable,_angular_platformBrowser) { 'use strict';
 
+    var __extends = (this && this.__extends) || function (d, b) {
+        for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
     /**
      * A backend for http that uses the `XMLHttpRequest` browser API.
      *
@@ -28,9 +33,10 @@
     BrowserXhr.decorators = [
         { type: _angular_core.Injectable },
     ];
-    /** @nocollapse */
+    /**
+     * @nocollapse
+     */
     BrowserXhr.ctorParameters = function () { return []; };
-
     var RequestMethod = {};
     RequestMethod.Get = 0;
     RequestMethod.Post = 1;
@@ -94,7 +100,6 @@
     ResponseContentType[ResponseContentType.Json] = "Json";
     ResponseContentType[ResponseContentType.ArrayBuffer] = "ArrayBuffer";
     ResponseContentType[ResponseContentType.Blob] = "Blob";
-
     /**
      * Polyfill for [Headers](https://developer.mozilla.org/en-US/docs/Web/API/Headers/Headers), as
      * specified in the [Fetch Spec](https://fetch.spec.whatwg.org/#headers-class).
@@ -129,9 +134,13 @@
          */
         function Headers(headers) {
             var _this = this;
-            /** @internal header names are lower case */
+            /**
+             * \@internal header names are lower case
+             */
             this._headers = new Map();
-            /** @internal map lower case names to actual names */
+            /**
+             * \@internal map lower case names to actual names
+             */
             this._normalizedNames = new Map();
             if (!headers) {
                 return;
@@ -158,9 +167,9 @@
             headersString.split('\n').forEach(function (line) {
                 var /** @type {?} */ index = line.indexOf(':');
                 if (index > 0) {
-                    var /** @type {?} */ name_1 = line.slice(0, index);
+                    var /** @type {?} */ name = line.slice(0, index);
                     var /** @type {?} */ value = line.slice(index + 1).trim();
-                    headers.set(name_1, value);
+                    headers.set(name, value);
                 }
             });
             return headers;
@@ -281,19 +290,6 @@
         };
         return Headers;
     }());
-
-    /**
-     * @license
-     * Copyright Google Inc. All Rights Reserved.
-     *
-     * Use of this source code is governed by an MIT-style license that can be
-     * found in the LICENSE file at https://angular.io/license
-     */
-    var __extends$1 = (this && this.__extends) || function (d, b) {
-        for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
     /**
      * Creates a response options object to be optionally provided when instantiating a
      * {\@link Response}.
@@ -421,7 +417,7 @@
      * \@experimental
      */
     var BaseResponseOptions = (function (_super) {
-        __extends$1(BaseResponseOptions, _super);
+        __extends(BaseResponseOptions, _super);
         function BaseResponseOptions() {
             return _super.call(this, { status: 200, statusText: 'Ok', type: ResponseType.Default, headers: new Headers() }) || this;
         }
@@ -430,9 +426,10 @@
     BaseResponseOptions.decorators = [
         { type: _angular_core.Injectable },
     ];
-    /** @nocollapse */
+    /**
+     * @nocollapse
+     */
     BaseResponseOptions.ctorParameters = function () { return []; };
-
     /**
      * @license
      * Copyright Google Inc. All Rights Reserved.
@@ -488,7 +485,6 @@
         XSRFStrategy.prototype.configureRequest = function (req) { };
         return XSRFStrategy;
     }());
-
     /**
      * @param {?} method
      * @return {?}
@@ -539,7 +535,6 @@
         }
         return view.buffer;
     }
-
     /**
      * @license
      * Copyright Google Inc. All Rights Reserved.
@@ -759,7 +754,6 @@
         URLSearchParams.prototype.delete = function (param) { this.paramsMap.delete(param); };
         return URLSearchParams;
     }());
-
     /**
      * HTTP request body used by both {\@link Request} and {\@link Response}
      * https://fetch.spec.whatwg.org/#body
@@ -825,19 +819,6 @@
         };
         return Body;
     }());
-
-    /**
-     * @license
-     * Copyright Google Inc. All Rights Reserved.
-     *
-     * Use of this source code is governed by an MIT-style license that can be
-     * found in the LICENSE file at https://angular.io/license
-     */
-    var __extends$2 = (this && this.__extends) || function (d, b) {
-        for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
     /**
      * Creates `Response` instances from provided values.
      *
@@ -859,7 +840,7 @@
      * \@experimental
      */
     var Response = (function (_super) {
-        __extends$2(Response, _super);
+        __extends(Response, _super);
         /**
          * @param {?} responseOptions
          */
@@ -882,7 +863,6 @@
         };
         return Response;
     }(Body));
-
     var /** @type {?} */ _nextRequestId = 0;
     var /** @type {?} */ JSONP_HOME = '__ng_jsonp__';
     var /** @type {?} */ _jsonpConnections = null;
@@ -953,21 +933,10 @@
     BrowserJsonp.decorators = [
         { type: _angular_core.Injectable },
     ];
-    /** @nocollapse */
-    BrowserJsonp.ctorParameters = function () { return []; };
-
     /**
-     * @license
-     * Copyright Google Inc. All Rights Reserved.
-     *
-     * Use of this source code is governed by an MIT-style license that can be
-     * found in the LICENSE file at https://angular.io/license
+     * @nocollapse
      */
-    var __extends = (this && this.__extends) || function (d, b) {
-        for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
+    BrowserJsonp.ctorParameters = function () { return []; };
     var /** @type {?} */ JSONP_ERR_NO_CALLBACK = 'JSONP injected script did not invoke callback.';
     var /** @type {?} */ JSONP_ERR_WRONG_METHOD = 'JSONP requests must use GET request method.';
     /**
@@ -1114,12 +1083,13 @@
     JSONPBackend_.decorators = [
         { type: _angular_core.Injectable },
     ];
-    /** @nocollapse */
+    /**
+     * @nocollapse
+     */
     JSONPBackend_.ctorParameters = function () { return [
         { type: BrowserJsonp, },
         { type: ResponseOptions, },
     ]; };
-
     var /** @type {?} */ XSSI_PREFIX = /^\)\]\}',?\n/;
     /**
      * Creates connections using `XMLHttpRequest`. Given a fully-qualified
@@ -1296,7 +1266,7 @@
          * @return {?}
          */
         CookieXSRFStrategy.prototype.configureRequest = function (req) {
-            var /** @type {?} */ xsrfToken = _angular_platformBrowser.__platform_browser_private__.getDOM().getCookie(this._cookieName);
+            var /** @type {?} */ xsrfToken = _angular_platformBrowser.ɵgetDOM().getCookie(this._cookieName);
             if (xsrfToken) {
                 req.headers.set(this._headerName, xsrfToken);
             }
@@ -1353,25 +1323,14 @@
     XHRBackend.decorators = [
         { type: _angular_core.Injectable },
     ];
-    /** @nocollapse */
+    /**
+     * @nocollapse
+     */
     XHRBackend.ctorParameters = function () { return [
         { type: BrowserXhr, },
         { type: ResponseOptions, },
         { type: XSRFStrategy, },
     ]; };
-
-    /**
-     * @license
-     * Copyright Google Inc. All Rights Reserved.
-     *
-     * Use of this source code is governed by an MIT-style license that can be
-     * found in the LICENSE file at https://angular.io/license
-     */
-    var __extends$3 = (this && this.__extends) || function (d, b) {
-        for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
     /**
      * Creates a request options object to be optionally provided when instantiating a
      * {\@link Request}.
@@ -1562,7 +1521,7 @@
      * \@experimental
      */
     var BaseRequestOptions = (function (_super) {
-        __extends$3(BaseRequestOptions, _super);
+        __extends(BaseRequestOptions, _super);
         function BaseRequestOptions() {
             return _super.call(this, { method: RequestMethod.Get, headers: new Headers() }) || this;
         }
@@ -1571,21 +1530,10 @@
     BaseRequestOptions.decorators = [
         { type: _angular_core.Injectable },
     ];
-    /** @nocollapse */
-    BaseRequestOptions.ctorParameters = function () { return []; };
-
     /**
-     * @license
-     * Copyright Google Inc. All Rights Reserved.
-     *
-     * Use of this source code is governed by an MIT-style license that can be
-     * found in the LICENSE file at https://angular.io/license
+     * @nocollapse
      */
-    var __extends$5 = (this && this.__extends) || function (d, b) {
-        for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
+    BaseRequestOptions.ctorParameters = function () { return []; };
     /**
      * Creates `Request` instances from provided values.
      *
@@ -1626,7 +1574,7 @@
      * \@experimental
      */
     var Request = (function (_super) {
-        __extends$5(Request, _super);
+        __extends(Request, _super);
         /**
          * @param {?} requestOptions
          */
@@ -1734,19 +1682,6 @@
     var /** @type {?} */ FormData = ((w) /** TODO #9100 */)['FormData'] || noop;
     var /** @type {?} */ Blob$1 = ((w) /** TODO #9100 */)['Blob'] || noop;
     var /** @type {?} */ ArrayBuffer$1 = ((w) /** TODO #9100 */)['ArrayBuffer'] || noop;
-
-    /**
-     * @license
-     * Copyright Google Inc. All Rights Reserved.
-     *
-     * Use of this source code is governed by an MIT-style license that can be
-     * found in the LICENSE file at https://angular.io/license
-     */
-    var __extends$4 = (this && this.__extends) || function (d, b) {
-        for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
     /**
      * @param {?} backend
      * @param {?} request
@@ -1941,7 +1876,9 @@
     Http.decorators = [
         { type: _angular_core.Injectable },
     ];
-    /** @nocollapse */
+    /**
+     * @nocollapse
+     */
     Http.ctorParameters = function () { return [
         { type: ConnectionBackend, },
         { type: RequestOptions, },
@@ -1950,7 +1887,7 @@
      * \@experimental
      */
     var Jsonp = (function (_super) {
-        __extends$4(Jsonp, _super);
+        __extends(Jsonp, _super);
         /**
          * @param {?} backend
          * @param {?} defaultOptions
@@ -1997,12 +1934,13 @@
     Jsonp.decorators = [
         { type: _angular_core.Injectable },
     ];
-    /** @nocollapse */
+    /**
+     * @nocollapse
+     */
     Jsonp.ctorParameters = function () { return [
         { type: ConnectionBackend, },
         { type: RequestOptions, },
     ]; };
-
     /**
      * @return {?}
      */
@@ -2049,7 +1987,9 @@
                     ],
                 },] },
     ];
-    /** @nocollapse */
+    /**
+     * @nocollapse
+     */
     HttpModule.ctorParameters = function () { return []; };
     /**
      * The module that includes jsonp's providers
@@ -2074,13 +2014,14 @@
                     ],
                 },] },
     ];
-    /** @nocollapse */
-    JsonpModule.ctorParameters = function () { return []; };
-
     /**
-     * @stable
+     * @nocollapse
      */
-    var /** @type {?} */ VERSION = new _angular_core.Version('4.0.0-beta.8');
+    JsonpModule.ctorParameters = function () { return []; };
+    /**
+     * \@stable
+     */
+    var VERSION = new _angular_core.Version('4.0.0-rc.5');
 
     exports.BrowserXhr = BrowserXhr;
     exports.JSONPBackend = JSONPBackend;
@@ -2111,9 +2052,10 @@
     exports.VERSION = VERSION;
     exports.ɵg = BrowserJsonp;
     exports.ɵa = JSONPBackend_;
-    exports.ɵe = Body;
+    exports.ɵf = Body;
     exports.ɵb = _createDefaultCookieXSRFStrategy;
     exports.ɵc = httpFactory;
     exports.ɵd = jsonpFactory;
 
 }));
+//# sourceMappingURL=http.umd.js.map

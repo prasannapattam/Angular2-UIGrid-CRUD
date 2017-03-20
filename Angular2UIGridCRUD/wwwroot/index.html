@@ -10,6 +10,7 @@
 
     <script src="lib/js/angularjs/angular.js"></script>
     <script src="lib/js/angularjs/ui-grid.js"></script>
+    <script src="lib/js/angularjs/angular-ui-router.js"></script>
     <link rel="stylesheet" href="lib/css/angularjs/ui-grid.css" />
 
     <!-- Polyfill(s) for older browsers -->
@@ -27,6 +28,13 @@
   </head>
 
   <body>
-    <root-app>Loading UI Grid in Angular 2 ...</root-app>
+        <a ui-sref="hello">Hello</a> &nbsp;&nbsp;&nbsp;
+        <a ui-sref="about">About</a> &nbsp;&nbsp;&nbsp;
+        <router-link href="/hero/5">Hero 5</router-link> &nbsp;&nbsp;&nbsp;
+        <router-link href="/hero">Hero List</router-link><br />
+
+        <fx-router></fx-router>
+        <br />
+        <root-app>Loading UI Grid in Angular 2 ...</root-app>
   </body>
 </html>

@@ -1,15 +1,13 @@
 /**
- * @license Angular v4.0.0-beta.8
+ * @license Angular v4.0.0-rc.5
  * (c) 2010-2017 Google, Inc. https://angular.io/
  * License: MIT
  */
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/compiler'), require('@angular/core'), require('@angular/platform-browser')) :
-    typeof define === 'function' && define.amd ? define(['exports', '@angular/compiler', '@angular/core', '@angular/platform-browser'], factory) :
-    (factory((global.ng = global.ng || {}, global.ng.platformBrowserDynamic = global.ng.platformBrowserDynamic || {}),global.ng.compiler,global.ng.core,global.ng.platformBrowser));
-}(this, function (exports,_angular_compiler,_angular_core,_angular_platformBrowser) { 'use strict';
-
-    var INTERNAL_BROWSER_PLATFORM_PROVIDERS = _angular_platformBrowser.__platform_browser_private__.INTERNAL_BROWSER_PLATFORM_PROVIDERS;
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/compiler'), require('@angular/core'), require('@angular/common'), require('@angular/platform-browser')) :
+    typeof define === 'function' && define.amd ? define(['exports', '@angular/compiler', '@angular/core', '@angular/common', '@angular/platform-browser'], factory) :
+    (factory((global.ng = global.ng || {}, global.ng.platformBrowserDynamic = global.ng.platformBrowserDynamic || {}),global.ng.compiler,global.ng.core,global.ng.common,global.ng.platformBrowser));
+}(this, function (exports,_angular_compiler,_angular_core,_angular_common,_angular_platformBrowser) { 'use strict';
 
     var __extends = (this && this.__extends) || function (d, b) {
         for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -62,58 +60,15 @@
     ];
     /** @nocollapse */
     ResourceLoaderImpl.ctorParameters = function () { return []; };
-
     var INTERNAL_BROWSER_DYNAMIC_PLATFORM_PROVIDERS = [
-        INTERNAL_BROWSER_PLATFORM_PROVIDERS,
+        _angular_platformBrowser.ɵINTERNAL_BROWSER_PLATFORM_PROVIDERS,
         {
             provide: _angular_core.COMPILER_OPTIONS,
             useValue: { providers: [{ provide: _angular_compiler.ResourceLoader, useClass: ResourceLoaderImpl }] },
             multi: true
         },
+        { provide: _angular_core.PLATFORM_ID, useValue: _angular_common.ɵPLATFORM_BROWSER_ID },
     ];
-
-    /**
-     * @license
-     * Copyright Google Inc. All Rights Reserved.
-     *
-     * Use of this source code is governed by an MIT-style license that can be
-     * found in the LICENSE file at https://angular.io/license
-     */
-    var globalScope;
-    if (typeof window === 'undefined') {
-        if (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope) {
-            // TODO: Replace any with WorkerGlobalScope from lib.webworker.d.ts #3492
-            globalScope = self;
-        }
-        else {
-            globalScope = global;
-        }
-    }
-    else {
-        globalScope = window;
-    }
-    // Need to declare a new variable for global here since TypeScript
-    // exports the original value of the symbol.
-    var _global = globalScope;
-    // TODO: remove calls to assert in production environment
-    // Note: Can't just export this and import in in other files
-    // as `assert` is a reserved keyword in Dart
-    _global.assert = function assert(condition) {
-        // TODO: to be fixed properly via #2830, noop for now
-    };
-
-    /**
-     * @license
-     * Copyright Google Inc. All Rights Reserved.
-     *
-     * Use of this source code is governed by an MIT-style license that can be
-     * found in the LICENSE file at https://angular.io/license
-     */
-    var __extends$1 = (this && this.__extends) || function (d, b) {
-        for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
     /**
      * An implementation of ResourceLoader that uses a template cache to avoid doing an actual
      * ResourceLoader.
@@ -122,10 +77,10 @@
      * via a separate mechanism.
      */
     var CachedResourceLoader = (function (_super) {
-        __extends$1(CachedResourceLoader, _super);
+        __extends(CachedResourceLoader, _super);
         function CachedResourceLoader() {
             var _this = _super.call(this) || this;
-            _this._cache = _global.$templateCache;
+            _this._cache = _angular_core.ɵglobal.$templateCache;
             if (_this._cache == null) {
                 throw new Error('CachedResourceLoader: Template cache was not found in $templateCache.');
             }
@@ -141,17 +96,10 @@
         };
         return CachedResourceLoader;
     }(_angular_compiler.ResourceLoader));
-
-    var __platform_browser_dynamic_private__ = {
-        INTERNAL_BROWSER_DYNAMIC_PLATFORM_PROVIDERS: INTERNAL_BROWSER_DYNAMIC_PLATFORM_PROVIDERS,
-        ResourceLoaderImpl: ResourceLoaderImpl
-    };
-
     /**
      * @stable
      */
-    var VERSION = new _angular_core.Version('4.0.0-beta.8');
-
+    var VERSION = new _angular_core.Version('4.0.0-rc.5');
     /**
      * @experimental
      */
@@ -164,6 +112,8 @@
     exports.RESOURCE_CACHE_PROVIDER = RESOURCE_CACHE_PROVIDER;
     exports.platformBrowserDynamic = platformBrowserDynamic;
     exports.VERSION = VERSION;
-    exports.__platform_browser_dynamic_private__ = __platform_browser_dynamic_private__;
+    exports.ɵINTERNAL_BROWSER_DYNAMIC_PLATFORM_PROVIDERS = INTERNAL_BROWSER_DYNAMIC_PLATFORM_PROVIDERS;
+    exports.ɵResourceLoaderImpl = ResourceLoaderImpl;
 
 }));
+//# sourceMappingURL=platform-browser-dynamic.umd.js.map

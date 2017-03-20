@@ -24,6 +24,26 @@
     <Content Include="wwwroot\app\framework\controls\grid-options.js.map" />
     <Content Include="wwwroot\app\framework\controls\grid-options.ts" />
     <Content Include="wwwroot\app\framework\injector.service.ts" />
+    <Content Include="wwwroot\app\framework\ng1-ng2-router.ts" />
+    <Content Include="wwwroot\app\framework\route\fx.router.js" />
+    <Content Include="wwwroot\app\framework\route\fx.router.js.map" />
+    <Content Include="wwwroot\app\framework\route\fx.router.module.js" />
+    <Content Include="wwwroot\app\framework\route\fx.router.module.js.map" />
+    <Content Include="wwwroot\app\framework\route\fx.router.module.ts" />
+    <Content Include="wwwroot\app\framework\route\fx.router.ts" />
+    <Content Include="wwwroot\app\framework\route\fxrouter.js" />
+    <Content Include="wwwroot\app\framework\route\fxrouter.js.map" />
+    <Content Include="wwwroot\app\framework\route\ng1-ng2-router.js" />
+    <Content Include="wwwroot\app\framework\route\ng1-ng2-router.js.map" />
+    <Content Include="wwwroot\app\framework\route\ng1-ng2-router.ts" />
+    <Content Include="wwwroot\app\framework\route\Ng1Ng2UrlHandlingStrategy.js" />
+    <Content Include="wwwroot\app\framework\route\Ng1Ng2UrlHandlingStrategy.js.map" />
+    <Content Include="wwwroot\app\framework\route\Ng1Ng2UrlHandlingStrategy.ts" />
+    <Content Include="wwwroot\app\framework\route\router.link.ts" />
+    <Content Include="wwwroot\app\framework\route\router.module.ts" />
+    <Content Include="wwwroot\app\framework\route\ui-ng2-router.js.map" />
+    <Content Include="wwwroot\app\framework\route\fxrouter.ts" />
+    <Content Include="wwwroot\app\framework\route\ui.view.ts" />
     <Content Include="wwwroot\app\framework\serviceDocument\page.ts" />
     <Content Include="wwwroot\app\framework\serviceDocument\pageAction.js" />
     <Content Include="wwwroot\app\framework\serviceDocument\pageAction.js.map" />
@@ -50,6 +70,7 @@
     <Content Include="wwwroot\app\hero\hero.service.ts" />
     <Content Include="wwwroot\app\hero\hero.ts" />
     <Content Include="wwwroot\app\hero\hero-list.component.html" />
+    <Content Include="wwwroot\app\Ng1Ng2UrlHandlingStrategy.ts" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />

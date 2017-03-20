@@ -27,14 +27,23 @@ gulp.task("SystemJS", function () {
 
     files = [
         "./node_modules/@angular/core/bundles/core.umd.js",
+        "./node_modules/@angular/core/bundles/core.umd.js.map",
         "./node_modules/@angular/common/bundles/common.umd.js",
+        "./node_modules/@angular/common/bundles/common.umd.js.map",
         "./node_modules/@angular/compiler/bundles/compiler.umd.js",
+        "./node_modules/@angular/compiler/bundles/compiler.umd.js.map",
         "./node_modules/@angular/platform-browser/bundles/platform-browser.umd.js",
+        "./node_modules/@angular/platform-browser/bundles/platform-browser.umd.js.map",
         "./node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js",
+        "./node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js.map",
         "./node_modules/@angular/http/bundles/http.umd.js",
+        "./node_modules/@angular/http/bundles/http.umd.js.map",
         "./node_modules/@angular/router/bundles/router.umd.js",
+        "./node_modules/@angular/router/bundles/router.umd.js.map",
         "./node_modules/@angular/forms/bundles/forms.umd.js",
+        "./node_modules/@angular/forms/bundles/forms.umd.js.map",
         "./node_modules/@angular/upgrade/bundles/upgrade-static.umd.js",
+        "./node_modules/@angular/upgrade/bundles/upgrade-static.umd.js.map",
         "./node_modules/@angular/material/bundles/material.umd.js",
         "./node_modules/@angular/flex-layout/bundles/flex-layout.umd.js"
     ];
@@ -56,7 +65,9 @@ gulp.task("SystemJS", function () {
         "./node_modules/angular/angular.js",
         "./node_modules/angular/angular.min.js",
         "./node_modules/angular-ui-grid/ui-grid.js",
-        "./node_modules/angular-ui-grid/ui-grid.min.js"
+        "./node_modules/angular-ui-grid/ui-grid.min.js",
+        "./node_modules/angular-ui-router/release/angular-ui-router.js",
+        "./node_modules/angular-ui-router/release/angular-ui-router.min.js"
     ];
     gulp.src(files, { base: "." })
         .pipe(flatten())

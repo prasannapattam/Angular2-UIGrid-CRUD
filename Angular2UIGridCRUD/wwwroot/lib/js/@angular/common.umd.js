@@ -1,5 +1,5 @@
 /**
- * @license Angular v4.0.0-beta.8
+ * @license Angular v4.0.0-rc.5
  * (c) 2010-2017 Google, Inc. https://angular.io/
  * License: MIT
  */
@@ -9,6 +9,11 @@
     (factory((global.ng = global.ng || {}, global.ng.common = global.ng.common || {}),global.ng.core));
 }(this, function (exports,_angular_core) { 'use strict';
 
+    var __extends = (this && this.__extends) || function (d, b) {
+        for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
     /**
      * This class should not be used directly by an application developer. Instead, use
      * {\@link Location}.
@@ -108,7 +113,11 @@
         PlatformLocation.prototype.back = function () { };
         return PlatformLocation;
     }());
-
+    /**
+     * \@whatItDoes indicates when a location is initialized
+     * \@experimental
+     */
+    var LOCATION_INITIALIZED = new _angular_core.InjectionToken('Location Initialized');
     /**
      * `LocationStrategy` is responsible for representing and reading route state
      * from the browser's URL. Angular provides two strategies:
@@ -186,151 +195,27 @@
     }());
     /**
      * The `APP_BASE_HREF` token represents the base href to be used with the
-     * {@link PathLocationStrategy}.
+     * {\@link PathLocationStrategy}.
      *
-     * If you're using {@link PathLocationStrategy}, you must provide a provider to a string
+     * If you're using {\@link PathLocationStrategy}, you must provide a provider to a string
      * representing the URL prefix that should be preserved when generating and recognizing
      * URLs.
      *
      * ### Example
      *
      * ```typescript
-     * import {Component, NgModule} from '@angular/core';
-     * import {APP_BASE_HREF} from '@angular/common';
+     * import {Component, NgModule} from '\@angular/core';
+     * import {APP_BASE_HREF} from '\@angular/common';
      *
-     * @NgModule({
+     * \@NgModule({
      *   providers: [{provide: APP_BASE_HREF, useValue: '/my/app'}]
      * })
      * class AppModule {}
      * ```
      *
-     * @stable
+     * \@stable
      */
-    var /** @type {?} */ APP_BASE_HREF = new _angular_core.InjectionToken('appBaseHref');
-
-    /**
-     * @license
-     * Copyright Google Inc. All Rights Reserved.
-     *
-     * Use of this source code is governed by an MIT-style license that can be
-     * found in the LICENSE file at https://angular.io/license
-     */
-    var /** @type {?} */ globalScope;
-    if (typeof window === 'undefined') {
-        if (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope) {
-            // TODO: Replace any with WorkerGlobalScope from lib.webworker.d.ts #3492
-            globalScope = (self);
-        }
-        else {
-            globalScope = (global);
-        }
-    }
-    else {
-        globalScope = (window);
-    }
-    // Need to declare a new variable for global here since TypeScript
-    // exports the original value of the symbol.
-    var /** @type {?} */ _global = globalScope;
-    /**
-     * @param {?} type
-     * @return {?}
-     */
-    function getTypeNameForDebugging(type) {
-        return type['name'] || typeof type;
-    }
-    // TODO: remove calls to assert in production environment
-    // Note: Can't just export this and import in in other files
-    // as `assert` is a reserved keyword in Dart
-    _global.assert = function assert(condition) {
-        // TODO: to be fixed properly via #2830, noop for now
-    };
-    /**
-     * @param {?} obj
-     * @return {?}
-     */
-    function isPresent(obj) {
-        return obj != null;
-    }
-    /**
-     * @param {?} obj
-     * @return {?}
-     */
-    function isBlank(obj) {
-        return obj == null;
-    }
-    /**
-     * @param {?} token
-     * @return {?}
-     */
-    function stringify(token) {
-        if (typeof token === 'string') {
-            return token;
-        }
-        if (token == null) {
-            return '' + token;
-        }
-        if (token.overriddenName) {
-            return "" + token.overriddenName;
-        }
-        if (token.name) {
-            return "" + token.name;
-        }
-        var /** @type {?} */ res = token.toString();
-        var /** @type {?} */ newLineIndex = res.indexOf('\n');
-        return newLineIndex === -1 ? res : res.substring(0, newLineIndex);
-    }
-    var NumberWrapper = (function () {
-        function NumberWrapper() {
-        }
-        /**
-         * @param {?} text
-         * @return {?}
-         */
-        NumberWrapper.parseIntAutoRadix = function (text) {
-            var /** @type {?} */ result = parseInt(text);
-            if (isNaN(result)) {
-                throw new Error('Invalid integer literal when parsing ' + text);
-            }
-            return result;
-        };
-        /**
-         * @param {?} value
-         * @return {?}
-         */
-        NumberWrapper.isNumeric = function (value) { return !isNaN(value - parseFloat(value)); };
-        return NumberWrapper;
-    }());
-    /**
-     * @param {?} o
-     * @return {?}
-     */
-    function isJsObject(o) {
-        return o !== null && (typeof o === 'function' || typeof o === 'object');
-    }
-    var /** @type {?} */ _symbolIterator = null;
-    /**
-     * @return {?}
-     */
-    function getSymbolIterator() {
-        if (!_symbolIterator) {
-            if (((globalScope)).Symbol && Symbol.iterator) {
-                _symbolIterator = Symbol.iterator;
-            }
-            else {
-                // es6-shim specific logic
-                var /** @type {?} */ keys = Object.getOwnPropertyNames(Map.prototype);
-                for (var /** @type {?} */ i = 0; i < keys.length; ++i) {
-                    var /** @type {?} */ key = keys[i];
-                    if (key !== 'entries' && key !== 'size' &&
-                        ((Map)).prototype[key] === Map.prototype['entries']) {
-                        _symbolIterator = key;
-                    }
-                }
-            }
-        }
-        return _symbolIterator;
-    }
-
+    var APP_BASE_HREF = new _angular_core.InjectionToken('appBaseHref');
     /**
      * \@whatItDoes `Location` is a service that applications can use to interact with a browser's URL.
      * \@description
@@ -358,7 +243,9 @@
          */
         function Location(platformStrategy) {
             var _this = this;
-            /** @internal */
+            /**
+             * \@internal
+             */
             this._subject = new _angular_core.EventEmitter();
             this._platformStrategy = platformStrategy;
             var browserBaseHref = this._platformStrategy.getBaseHref();
@@ -504,7 +391,9 @@
     Location.decorators = [
         { type: _angular_core.Injectable },
     ];
-    /** @nocollapse */
+    /**
+     * @nocollapse
+     */
     Location.ctorParameters = function () { return [
         { type: LocationStrategy, },
     ]; };
@@ -523,19 +412,6 @@
     function _stripIndexHtml(url) {
         return url.replace(/\/index.html$/, '');
     }
-
-    /**
-     * @license
-     * Copyright Google Inc. All Rights Reserved.
-     *
-     * Use of this source code is governed by an MIT-style license that can be
-     * found in the LICENSE file at https://angular.io/license
-     */
-    var __extends = (this && this.__extends) || function (d, b) {
-        for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
     /**
      * \@whatItDoes Use URL hash for storing application location data.
      * \@description
@@ -563,7 +439,7 @@
             var _this = _super.call(this) || this;
             _this._platformLocation = _platformLocation;
             _this._baseHref = '';
-            if (isPresent(_baseHref)) {
+            if (_baseHref != null) {
                 _this._baseHref = _baseHref;
             }
             return _this;
@@ -589,7 +465,7 @@
             // the hash value is always prefixed with a `#`
             // and if it is empty then it will stay empty
             var /** @type {?} */ path = this._platformLocation.hash;
-            if (!isPresent(path))
+            if (path == null)
                 path = '#';
             return path.length > 0 ? path.substring(1) : path;
         };
@@ -642,24 +518,13 @@
     HashLocationStrategy.decorators = [
         { type: _angular_core.Injectable },
     ];
-    /** @nocollapse */
+    /**
+     * @nocollapse
+     */
     HashLocationStrategy.ctorParameters = function () { return [
         { type: PlatformLocation, },
         { type: undefined, decorators: [{ type: _angular_core.Optional }, { type: _angular_core.Inject, args: [APP_BASE_HREF,] },] },
     ]; };
-
-    /**
-     * @license
-     * Copyright Google Inc. All Rights Reserved.
-     *
-     * Use of this source code is governed by an MIT-style license that can be
-     * found in the LICENSE file at https://angular.io/license
-     */
-    var __extends$1 = (this && this.__extends) || function (d, b) {
-        for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
     /**
      * \@whatItDoes Use URL for storing application location data.
      * \@description
@@ -687,7 +552,7 @@
      * \@stable
      */
     var PathLocationStrategy = (function (_super) {
-        __extends$1(PathLocationStrategy, _super);
+        __extends(PathLocationStrategy, _super);
         /**
          * @param {?} _platformLocation
          * @param {?=} href
@@ -695,10 +560,10 @@
         function PathLocationStrategy(_platformLocation, href) {
             var _this = _super.call(this) || this;
             _this._platformLocation = _platformLocation;
-            if (isBlank(href)) {
+            if (href == null) {
                 href = _this._platformLocation.getBaseHrefFromDOM();
             }
-            if (isBlank(href)) {
+            if (href == null) {
                 throw new Error("No base href set. Please provide a value for the APP_BASE_HREF token or add a base element to the document.");
             }
             _this._baseHref = href;
@@ -769,24 +634,13 @@
     PathLocationStrategy.decorators = [
         { type: _angular_core.Injectable },
     ];
-    /** @nocollapse */
+    /**
+     * @nocollapse
+     */
     PathLocationStrategy.ctorParameters = function () { return [
         { type: PlatformLocation, },
         { type: undefined, decorators: [{ type: _angular_core.Optional }, { type: _angular_core.Inject, args: [APP_BASE_HREF,] },] },
     ]; };
-
-    /**
-     * @license
-     * Copyright Google Inc. All Rights Reserved.
-     *
-     * Use of this source code is governed by an MIT-style license that can be
-     * found in the LICENSE file at https://angular.io/license
-     */
-    var __extends$2 = (this && this.__extends) || function (d, b) {
-        for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
     /**
      * \@experimental
      * @abstract
@@ -833,7 +687,7 @@
      * \@experimental
      */
     var NgLocaleLocalization = (function (_super) {
-        __extends$2(NgLocaleLocalization, _super);
+        __extends(NgLocaleLocalization, _super);
         /**
          * @param {?} locale
          */
@@ -868,7 +722,9 @@
     NgLocaleLocalization.decorators = [
         { type: _angular_core.Injectable },
     ];
-    /** @nocollapse */
+    /**
+     * @nocollapse
+     */
     NgLocaleLocalization.ctorParameters = function () { return [
         { type: undefined, decorators: [{ type: _angular_core.Inject, args: [_angular_core.LOCALE_ID,] },] },
     ]; };
@@ -1293,19 +1149,6 @@
                 return Plural.Other;
         }
     }
-
-    /**
-     * @param {?} obj
-     * @return {?}
-     */
-    function isListLikeIterable(obj) {
-        if (!isJsObject(obj))
-            return false;
-        return Array.isArray(obj) ||
-            (!(obj instanceof Map) &&
-                getSymbolIterator() in obj); // JS Iterable have a Symbol.iterator prop
-    }
-
     /**
      * \@ngModule CommonModule
      *
@@ -1373,7 +1216,7 @@
                 this._keyValueDiffer = null;
                 this._rawClass = typeof v === 'string' ? v.split(/\s+/) : v;
                 if (this._rawClass) {
-                    if (isListLikeIterable(this._rawClass)) {
+                    if (_angular_core.ɵisListLikeIterable(this._rawClass)) {
                         this._iterableDiffer = this._iterableDiffers.find(this._rawClass).create();
                     }
                     else {
@@ -1434,7 +1277,7 @@
                     _this._toggleClass(record.item, true);
                 }
                 else {
-                    throw new Error("NgClass can only toggle CSS classes expressed as strings, got " + stringify(record.item));
+                    throw new Error("NgClass can only toggle CSS classes expressed as strings, got " + _angular_core.ɵstringify(record.item));
                 }
             });
             changes.forEachRemovedItem(function (record) { return _this._toggleClass(record.item, false); });
@@ -1483,7 +1326,9 @@
     NgClass.decorators = [
         { type: _angular_core.Directive, args: [{ selector: '[ngClass]' },] },
     ];
-    /** @nocollapse */
+    /**
+     * @nocollapse
+     */
     NgClass.ctorParameters = function () { return [
         { type: _angular_core.IterableDiffers, },
         { type: _angular_core.KeyValueDiffers, },
@@ -1494,7 +1339,6 @@
         'klass': [{ type: _angular_core.Input, args: ['class',] },],
         'ngClass': [{ type: _angular_core.Input },],
     };
-
     /**
      * Instantiates a single {\@link Component} type and inserts its Host View into current View.
      * `NgComponentOutlet` provides a declarative approach for dynamic component creation.
@@ -1566,28 +1410,25 @@
          * @return {?}
          */
         NgComponentOutlet.prototype.ngOnChanges = function (changes) {
-            if (this._componentRef) {
-                this._viewContainerRef.remove(this._viewContainerRef.indexOf(this._componentRef.hostView));
-            }
             this._viewContainerRef.clear();
             this._componentRef = null;
             if (this.ngComponentOutlet) {
-                var /** @type {?} */ injector = this.ngComponentOutletInjector || this._viewContainerRef.parentInjector;
-                if (((changes)).ngComponentOutletNgModuleFactory) {
+                var /** @type {?} */ elInjector = this.ngComponentOutletInjector || this._viewContainerRef.parentInjector;
+                if (changes['ngComponentOutletNgModuleFactory']) {
                     if (this._moduleRef)
                         this._moduleRef.destroy();
                     if (this.ngComponentOutletNgModuleFactory) {
-                        this._moduleRef = this.ngComponentOutletNgModuleFactory.create(injector);
+                        var /** @type {?} */ parentModule = elInjector.get(_angular_core.NgModuleRef);
+                        this._moduleRef = this.ngComponentOutletNgModuleFactory.create(parentModule.injector);
                     }
                     else {
                         this._moduleRef = null;
                     }
                 }
-                if (this._moduleRef) {
-                    injector = this._moduleRef.injector;
-                }
-                var /** @type {?} */ componentFactory = injector.get(_angular_core.ComponentFactoryResolver).resolveComponentFactory(this.ngComponentOutlet);
-                this._componentRef = this._viewContainerRef.createComponent(componentFactory, this._viewContainerRef.length, injector, this.ngComponentOutletContent);
+                var /** @type {?} */ componentFactoryResolver = this._moduleRef ? this._moduleRef.componentFactoryResolver :
+                    elInjector.get(_angular_core.ComponentFactoryResolver);
+                var /** @type {?} */ componentFactory = componentFactoryResolver.resolveComponentFactory(this.ngComponentOutlet);
+                this._componentRef = this._viewContainerRef.createComponent(componentFactory, this._viewContainerRef.length, elInjector, this.ngComponentOutletContent);
             }
         };
         /**
@@ -1602,7 +1443,9 @@
     NgComponentOutlet.decorators = [
         { type: _angular_core.Directive, args: [{ selector: '[ngComponentOutlet]' },] },
     ];
-    /** @nocollapse */
+    /**
+     * @nocollapse
+     */
     NgComponentOutlet.ctorParameters = function () { return [
         { type: _angular_core.ViewContainerRef, },
     ]; };
@@ -1612,31 +1455,23 @@
         'ngComponentOutletContent': [{ type: _angular_core.Input },],
         'ngComponentOutletNgModuleFactory': [{ type: _angular_core.Input },],
     };
-
     /**
-     * @license
-     * Copyright Google Inc. All Rights Reserved.
-     *
-     * Use of this source code is governed by an MIT-style license that can be
-     * found in the LICENSE file at https://angular.io/license
+     * \@stable
      */
-    var __extends$3 = (this && this.__extends) || function (d, b) {
-        for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-    var NgForOfRow = (function () {
+    var NgForOfContext = (function () {
         /**
          * @param {?} $implicit
+         * @param {?} ngForOf
          * @param {?} index
          * @param {?} count
          */
-        function NgForOfRow($implicit, index, count) {
+        function NgForOfContext($implicit, ngForOf, index, count) {
             this.$implicit = $implicit;
+            this.ngForOf = ngForOf;
             this.index = index;
             this.count = count;
         }
-        Object.defineProperty(NgForOfRow.prototype, "first", {
+        Object.defineProperty(NgForOfContext.prototype, "first", {
             /**
              * @return {?}
              */
@@ -1644,7 +1479,7 @@
             enumerable: true,
             configurable: true
         });
-        Object.defineProperty(NgForOfRow.prototype, "last", {
+        Object.defineProperty(NgForOfContext.prototype, "last", {
             /**
              * @return {?}
              */
@@ -1652,7 +1487,7 @@
             enumerable: true,
             configurable: true
         });
-        Object.defineProperty(NgForOfRow.prototype, "even", {
+        Object.defineProperty(NgForOfContext.prototype, "even", {
             /**
              * @return {?}
              */
@@ -1660,7 +1495,7 @@
             enumerable: true,
             configurable: true
         });
-        Object.defineProperty(NgForOfRow.prototype, "odd", {
+        Object.defineProperty(NgForOfContext.prototype, "odd", {
             /**
              * @return {?}
              */
@@ -1668,7 +1503,7 @@
             enumerable: true,
             configurable: true
         });
-        return NgForOfRow;
+        return NgForOfContext;
     }());
     /**
      * The `NgForOf` directive instantiates a template once per item from an iterable. The context
@@ -1679,13 +1514,21 @@
      *
      * `NgForOf` provides several exported values that can be aliased to local variables:
      *
-     * * `index` will be set to the current loop iteration for each template context.
-     * * `first` will be set to a boolean value indicating whether the item is the first one in the
-     *   iteration.
-     * * `last` will be set to a boolean value indicating whether the item is the last one in the
-     *   iteration.
-     * * `even` will be set to a boolean value indicating whether this item has an even index.
-     * * `odd` will be set to a boolean value indicating whether this item has an odd index.
+     * - `$implicit: T`: The value of the individual items in the iterable (`ngForOf`).
+     * - `ngForOf: NgIterable<T>`: The value of the iterable expression. Useful when the expression is
+     * more complex then a property access, for example when using the async pipe (`userStreams |
+     * async`).
+     * - `index: number`: The index of the current item in the iterable.
+     * - `first: boolean`: True when the item is the first item in the iterable.
+     * - `last: boolean`: True when the item is the last item in the iterable.
+     * - `even: boolean`: True when the item has an even index in the iterable.
+     * - `odd: boolean`: True when the item has an odd index in the iterable.
+     *
+     * ```
+     * <li *ngFor="let user of userObservable | async as users; indexes as i; first as isFirst">
+     *    {{i}}/{{users.length}}. {{user}} <span *ngIf="isFirst">default</span>
+     * </li>
+     * ```
      *
      * ### Change Propagation
      *
@@ -1718,12 +1561,12 @@
      * - `<li *ngFor="let item of items; let i = index; trackBy: trackByFn">...</li>`
      * - `<li template="ngFor let item of items; let i = index; trackBy: trackByFn">...</li>`
      *
-     * With `<template>` element:
+     * With `<ng-template>` element:
      *
      * ```
-     * <template ngFor let-item [ngForOf]="items" let-i="index" [ngForTrackBy]="trackByFn">
+     * <ng-template ngFor let-item [ngForOf]="items" let-i="index" [ngForTrackBy]="trackByFn">
      *   <li>...</li>
-     * </template>
+     * </ng-template>
      * ```
      *
      * ### Example
@@ -1820,7 +1663,7 @@
             var /** @type {?} */ insertTuples = [];
             changes.forEachOperation(function (item, adjustedPreviousIndex, currentIndex) {
                 if (item.previousIndex == null) {
-                    var /** @type {?} */ view = _this._viewContainer.createEmbeddedView(_this._template, new NgForOfRow(null, null, null), currentIndex);
+                    var /** @type {?} */ view = _this._viewContainer.createEmbeddedView(_this._template, new NgForOfContext(null, _this.ngForOf, null, null), currentIndex);
                     var /** @type {?} */ tuple = new RecordViewTuple(item, view);
                     insertTuples.push(tuple);
                 }
@@ -1858,12 +1701,11 @@
         return NgForOf;
     }());
     NgForOf.decorators = [
-        { type: _angular_core.Directive, args: [{
-                    selector: '[ngFor][ngForOf]',
-                    providers: [{ provide: _angular_core.forwardRef(function () { return NgFor; }), useExisting: _angular_core.forwardRef(function () { return NgForOf; }) }]
-                },] },
+        { type: _angular_core.Directive, args: [{ selector: '[ngFor][ngForOf]' },] },
     ];
-    /** @nocollapse */
+    /**
+     * @nocollapse
+     */
     NgForOf.ctorParameters = function () { return [
         { type: _angular_core.ViewContainerRef, },
         { type: _angular_core.TemplateRef, },
@@ -1886,76 +1728,16 @@
         return RecordViewTuple;
     }());
     /**
-     * The `NgFor` directive instantiates a template once per item from an iterable. The context
-     * for each instantiated template inherits from the outer context with the given loop variable
-     * set to the current item from the iterable.
-     *
-     * ### Local Variables
-     *
-     * `NgFor` provides several exported values that can be aliased to local variables:
-     *
-     * * `index` will be set to the current loop iteration for each template context.
-     * * `first` will be set to a boolean value indicating whether the item is the first one in the
-     *   iteration.
-     * * `last` will be set to a boolean value indicating whether the item is the last one in the
-     *   iteration.
-     * * `even` will be set to a boolean value indicating whether this item has an even index.
-     * * `odd` will be set to a boolean value indicating whether this item has an odd index.
-     *
-     * ### Change Propagation
-     *
-     * When the contents of the iterator changes, `NgFor` makes the corresponding changes to the DOM:
-     *
-     * * When an item is added, a new instance of the template is added to the DOM.
-     * * When an item is removed, its template instance is removed from the DOM.
-     * * When items are reordered, their respective templates are reordered in the DOM.
-     * * Otherwise, the DOM element for that item will remain the same.
-     *
-     * Angular uses object identity to track insertions and deletions within the iterator and reproduce
-     * those changes in the DOM. This has important implications for animations and any stateful
-     * controls (such as `<input>` elements which accept user input) that are present. Inserted rows can
-     * be animated in, deleted rows can be animated out, and unchanged rows retain any unsaved state
-     * such as user input.
-     *
-     * It is possible for the identities of elements in the iterator to change while the data does not.
-     * This can happen, for example, if the iterator produced from an RPC to the server, and that
-     * RPC is re-run. Even if the data hasn't changed, the second response will produce objects with
-     * different identities, and Angular will tear down the entire DOM and rebuild it (as if all old
-     * elements were deleted and all new elements inserted). This is an expensive operation and should
-     * be avoided if possible.
-     *
-     * To customize the default tracking algorithm, `NgFor` supports `trackBy` option.
-     * `trackBy` takes a function which has two arguments: `index` and `item`.
-     * If `trackBy` is given, Angular tracks changes by the return value of the function.
-     *
-     * ### Syntax
-     *
-     * - `<li *ngFor="let item of items; let i = index; trackBy: trackByFn">...</li>`
-     * - `<li template="ngFor let item of items; let i = index; trackBy: trackByFn">...</li>`
-     *
-     * With `<template>` element:
-     *
-     * ```
-     * <template ngFor let-item [ngForOf]="items" let-i="index" [ngForTrackBy]="trackByFn">
-     *   <li>...</li>
-     * </template>
-     * ```
-     *
-     * ### Example
-     *
-     * See a [live demo](http://plnkr.co/edit/KVuXxDp0qinGDyo307QW?p=preview) for a more detailed
-     * example.
-     *
-     * @deprecated v4.0.0 - Use `NgForOf<T>` instead.
+     * @deprecated from v4.0.0 - Use NgForOf instead.
      */
-    var NgFor = (function (_super) {
-        __extends$3(NgFor, _super);
-        function NgFor() {
-            return _super !== null && _super.apply(this, arguments) || this;
-        }
-        return NgFor;
-    }(NgForOf));
-
+    var NgFor = NgForOf;
+    /**
+     * @param {?} type
+     * @return {?}
+     */
+    function getTypeNameForDebugging(type) {
+        return type['name'] || typeof type;
+    }
     /**
      * Conditionally includes a template based on the value of an `expression`.
      *
@@ -1973,7 +1755,7 @@
      * # Showing an alternative template using `else`
      *
      * If it is necessary to display a template when the `expression` is falsy use the `else` template
-     * binding as shown. Note that the `else` binding points to a `<template>` labeled `#elseBlock`.
+     * binding as shown. Note that the `else` binding points to a `<ng-template>` labeled `#elseBlock`.
      * The template can be defined anywhere in the component view but is typically placed right after
      * `ngIf` for readability.
      *
@@ -2008,7 +1790,7 @@
      * A better way to do this is to use `ngIf` and store the result of the condition in a local
      * variable as shown in the the example below:
      *
-     * {\@example common/ngIf/ts/module.ts region='NgIfLet'}
+     * {\@example common/ngIf/ts/module.ts region='NgIfAs'}
      *
      * Notice that:
      *  - We use only one `async` pipe and hence only one subscription gets created.
@@ -2023,25 +1805,25 @@
      * Simple form:
      * - `<div *ngIf="condition">...</div>`
      * - `<div template="ngIf condition">...</div>`
-     * - `<template [ngIf]="condition"><div>...</div></template>`
+     * - `<ng-template [ngIf]="condition"><div>...</div></ng-template>`
      *
      * Form with an else block:
      * ```
      * <div *ngIf="condition; else elseBlock">...</div>
-     * <template #elseBlock>...</template>
+     * <ng-template #elseBlock>...</ng-template>
      * ```
      *
      * Form with a `then` and `else` block:
      * ```
      * <div *ngIf="condition; then thenBlock else elseBlock"></div>
-     * <template #thenBlock>...</template>
-     * <template #elseBlock>...</template>
+     * <ng-template #thenBlock>...</ng-template>
+     * <ng-template #elseBlock>...</ng-template>
      * ```
      *
      * Form with storing the value locally:
      * ```
-     * <div *ngIf="condition; else elseBlock; let value">{{value}}</div>
-     * <template #elseBlock>...</template>
+     * <div *ngIf="condition as value; else elseBlock">{{value}}</div>
+     * <ng-template #elseBlock>...</ng-template>
      * ```
      *
      * \@stable
@@ -2066,7 +1848,7 @@
              * @return {?}
              */
             set: function (condition) {
-                this._context.$implicit = condition;
+                this._context.$implicit = this._context.ngIf = condition;
                 this._updateView();
             },
             enumerable: true,
@@ -2128,7 +1910,9 @@
     NgIf.decorators = [
         { type: _angular_core.Directive, args: [{ selector: '[ngIf]' },] },
     ];
-    /** @nocollapse */
+    /**
+     * @nocollapse
+     */
     NgIf.ctorParameters = function () { return [
         { type: _angular_core.ViewContainerRef, },
         { type: _angular_core.TemplateRef, },
@@ -2138,13 +1922,16 @@
         'ngIfThen': [{ type: _angular_core.Input },],
         'ngIfElse': [{ type: _angular_core.Input },],
     };
+    /**
+     * \@stable
+     */
     var NgIfContext = (function () {
         function NgIfContext() {
             this.$implicit = null;
+            this.ngIf = null;
         }
         return NgIfContext;
     }());
-
     var SwitchView = (function () {
         /**
          * @param {?} _viewContainerRef
@@ -2295,7 +2082,9 @@
     NgSwitch.decorators = [
         { type: _angular_core.Directive, args: [{ selector: '[ngSwitch]' },] },
     ];
-    /** @nocollapse */
+    /**
+     * @nocollapse
+     */
     NgSwitch.ctorParameters = function () { return []; };
     NgSwitch.propDecorators = {
         'ngSwitch': [{ type: _angular_core.Input },],
@@ -2344,7 +2133,9 @@
     NgSwitchCase.decorators = [
         { type: _angular_core.Directive, args: [{ selector: '[ngSwitchCase]' },] },
     ];
-    /** @nocollapse */
+    /**
+     * @nocollapse
+     */
     NgSwitchCase.ctorParameters = function () { return [
         { type: _angular_core.ViewContainerRef, },
         { type: _angular_core.TemplateRef, },
@@ -2390,13 +2181,14 @@
     NgSwitchDefault.decorators = [
         { type: _angular_core.Directive, args: [{ selector: '[ngSwitchDefault]' },] },
     ];
-    /** @nocollapse */
+    /**
+     * @nocollapse
+     */
     NgSwitchDefault.ctorParameters = function () { return [
         { type: _angular_core.ViewContainerRef, },
         { type: _angular_core.TemplateRef, },
         { type: NgSwitch, decorators: [{ type: _angular_core.Host },] },
     ]; };
-
     /**
      * \@ngModule CommonModule
      *
@@ -2405,9 +2197,9 @@
      * \@howToUse
      * ```
      * <some-element [ngPlural]="value">
-     *   <template ngPluralCase="=0">there is nothing</template>
-     *   <template ngPluralCase="=1">there is one</template>
-     *   <template ngPluralCase="few">there are a few</template>
+     *   <ng-template ngPluralCase="=0">there is nothing</ng-template>
+     *   <ng-template ngPluralCase="=1">there is one</ng-template>
+     *   <ng-template ngPluralCase="few">there are a few</ng-template>
      * </some-element>
      * ```
      *
@@ -2485,7 +2277,9 @@
     NgPlural.decorators = [
         { type: _angular_core.Directive, args: [{ selector: '[ngPlural]' },] },
     ];
-    /** @nocollapse */
+    /**
+     * @nocollapse
+     */
     NgPlural.ctorParameters = function () { return [
         { type: NgLocalization, },
     ]; };
@@ -2501,8 +2295,8 @@
      * \@howToUse
      * ```
      * <some-element [ngPlural]="value">
-     *   <template ngPluralCase="=0">...</template>
-     *   <template ngPluralCase="other">...</template>
+     *   <ng-template ngPluralCase="=0">...</ng-template>
+     *   <ng-template ngPluralCase="other">...</ng-template>
      * </some-element>
      * ```
      *
@@ -2527,14 +2321,15 @@
     NgPluralCase.decorators = [
         { type: _angular_core.Directive, args: [{ selector: '[ngPluralCase]' },] },
     ];
-    /** @nocollapse */
+    /**
+     * @nocollapse
+     */
     NgPluralCase.ctorParameters = function () { return [
         { type: undefined, decorators: [{ type: _angular_core.Attribute, args: ['ngPluralCase',] },] },
         { type: _angular_core.TemplateRef, },
         { type: _angular_core.ViewContainerRef, },
         { type: NgPlural, decorators: [{ type: _angular_core.Host },] },
     ]; };
-
     /**
      * \@ngModule CommonModule
      *
@@ -2618,7 +2413,9 @@
     NgStyle.decorators = [
         { type: _angular_core.Directive, args: [{ selector: '[ngStyle]' },] },
     ];
-    /** @nocollapse */
+    /**
+     * @nocollapse
+     */
     NgStyle.ctorParameters = function () { return [
         { type: _angular_core.KeyValueDiffers, },
         { type: _angular_core.ElementRef, },
@@ -2627,7 +2424,6 @@
     NgStyle.propDecorators = {
         'ngStyle': [{ type: _angular_core.Input },],
     };
-
     /**
      * \@ngModule CommonModule
      *
@@ -2686,7 +2482,9 @@
     NgTemplateOutlet.decorators = [
         { type: _angular_core.Directive, args: [{ selector: '[ngTemplateOutlet]' },] },
     ];
-    /** @nocollapse */
+    /**
+     * @nocollapse
+     */
     NgTemplateOutlet.ctorParameters = function () { return [
         { type: _angular_core.ViewContainerRef, },
     ]; };
@@ -2695,7 +2493,6 @@
         'ngTemplateOutlet': [{ type: _angular_core.Input },],
         'ngOutletContext': [{ type: _angular_core.Input },],
     };
-
     /**
      * A collection of Angular directives that are likely to be used in each and every Angular
      * application.
@@ -2714,22 +2511,13 @@
         NgPluralCase,
     ];
     /**
-     * A colletion of deprecated directives that are no longer part of the core module.
-     */
-    var /** @type {?} */ COMMON_DEPRECATED_DIRECTIVES = [NgFor];
-
-    var /** @type {?} */ isPromise = _angular_core.__core_private__.isPromise;
-    var /** @type {?} */ isObservable = _angular_core.__core_private__.isObservable;
-
-    /**
      * @param {?} type
      * @param {?} value
      * @return {?}
      */
     function invalidPipeArgumentError(type, value) {
-        return Error("InvalidPipeArgument: '" + value + "' for pipe '" + stringify(type) + "'");
+        return Error("InvalidPipeArgument: '" + value + "' for pipe '" + _angular_core.ɵstringify(type) + "'");
     }
-
     var ObservableStrategy = (function () {
         function ObservableStrategy() {
         }
@@ -2860,10 +2648,10 @@
          * @return {?}
          */
         AsyncPipe.prototype._selectStrategy = function (obj) {
-            if (isPromise(obj)) {
+            if (_angular_core.ɵisPromise(obj)) {
                 return _promiseStrategy;
             }
-            if (isObservable(obj)) {
+            if (_angular_core.ɵisObservable(obj)) {
                 return _observableStrategy;
             }
             throw invalidPipeArgumentError(AsyncPipe, obj);
@@ -2894,11 +2682,12 @@
     AsyncPipe.decorators = [
         { type: _angular_core.Pipe, args: [{ name: 'async', pure: false },] },
     ];
-    /** @nocollapse */
+    /**
+     * @nocollapse
+     */
     AsyncPipe.ctorParameters = function () { return [
         { type: _angular_core.ChangeDetectorRef, },
     ]; };
-
     /**
      * Transforms text to lowercase.
      *
@@ -2926,7 +2715,9 @@
     LowerCasePipe.decorators = [
         { type: _angular_core.Pipe, args: [{ name: 'lowercase' },] },
     ];
-    /** @nocollapse */
+    /**
+     * @nocollapse
+     */
     LowerCasePipe.ctorParameters = function () { return []; };
     /**
      * Helper method to transform a single word to titlecase.
@@ -2965,7 +2756,9 @@
     TitleCasePipe.decorators = [
         { type: _angular_core.Pipe, args: [{ name: 'titlecase' },] },
     ];
-    /** @nocollapse */
+    /**
+     * @nocollapse
+     */
     TitleCasePipe.ctorParameters = function () { return []; };
     /**
      * Transforms text to uppercase.
@@ -2992,9 +2785,10 @@
     UpperCasePipe.decorators = [
         { type: _angular_core.Pipe, args: [{ name: 'uppercase' },] },
     ];
-    /** @nocollapse */
+    /**
+     * @nocollapse
+     */
     UpperCasePipe.ctorParameters = function () { return []; };
-
     var NumberFormatStyle = {};
     NumberFormatStyle.Decimal = 0;
     NumberFormatStyle.Percent = 1;
@@ -3181,8 +2975,7 @@
      * @return {?}
      */
     function combine(options) {
-        return (_a = ((Object))).assign.apply(_a, [{}].concat(options));
-        var _a;
+        return ((Object)).assign.apply(((Object)), [{}].concat(options));
     }
     /**
      * @param {?} ret
@@ -3247,7 +3040,233 @@
         };
         return DateFormatter;
     }());
-
+    var /** @type {?} */ _NUMBER_FORMAT_REGEXP = /^(\d+)?\.((\d+)(-(\d+))?)?$/;
+    /**
+     * @param {?} pipe
+     * @param {?} locale
+     * @param {?} value
+     * @param {?} style
+     * @param {?} digits
+     * @param {?=} currency
+     * @param {?=} currencyAsSymbol
+     * @return {?}
+     */
+    function formatNumber(pipe, locale, value, style, digits, currency, currencyAsSymbol) {
+        if (currency === void 0) { currency = null; }
+        if (currencyAsSymbol === void 0) { currencyAsSymbol = false; }
+        if (value == null)
+            return null;
+        // Convert strings to numbers
+        value = typeof value === 'string' && isNumeric(value) ? +value : value;
+        if (typeof value !== 'number') {
+            throw invalidPipeArgumentError(pipe, value);
+        }
+        var /** @type {?} */ minInt;
+        var /** @type {?} */ minFraction;
+        var /** @type {?} */ maxFraction;
+        if (style !== NumberFormatStyle.Currency) {
+            // rely on Intl default for currency
+            minInt = 1;
+            minFraction = 0;
+            maxFraction = 3;
+        }
+        if (digits) {
+            var /** @type {?} */ parts = digits.match(_NUMBER_FORMAT_REGEXP);
+            if (parts === null) {
+                throw new Error(digits + " is not a valid digit info for number pipes");
+            }
+            if (parts[1] != null) {
+                minInt = parseIntAutoRadix(parts[1]);
+            }
+            if (parts[3] != null) {
+                minFraction = parseIntAutoRadix(parts[3]);
+            }
+            if (parts[5] != null) {
+                maxFraction = parseIntAutoRadix(parts[5]);
+            }
+        }
+        return NumberFormatter.format(/** @type {?} */ (value), locale, style, {
+            minimumIntegerDigits: minInt,
+            minimumFractionDigits: minFraction,
+            maximumFractionDigits: maxFraction,
+            currency: currency,
+            currencyAsSymbol: currencyAsSymbol,
+        });
+    }
+    /**
+     * \@ngModule CommonModule
+     * \@whatItDoes Formats a number according to locale rules.
+     * \@howToUse `number_expression | number[:digitInfo]`
+     *
+     * Formats a number as text. Group sizing and separator and other locale-specific
+     * configurations are based on the active locale.
+     *
+     * where `expression` is a number:
+     *  - `digitInfo` is a `string` which has a following format: <br>
+     *     <code>{minIntegerDigits}.{minFractionDigits}-{maxFractionDigits}</code>
+     *   - `minIntegerDigits` is the minimum number of integer digits to use. Defaults to `1`.
+     *   - `minFractionDigits` is the minimum number of digits after fraction. Defaults to `0`.
+     *   - `maxFractionDigits` is the maximum number of digits after fraction. Defaults to `3`.
+     *
+     * For more information on the acceptable range for each of these numbers and other
+     * details see your native internationalization library.
+     *
+     * WARNING: this pipe uses the Internationalization API which is not yet available in all browsers
+     * and may require a polyfill. See {\@linkDocs guide/browser-support} for details.
+     *
+     * ### Example
+     *
+     * {\@example common/pipes/ts/number_pipe.ts region='NumberPipe'}
+     *
+     * \@stable
+     */
+    var DecimalPipe = (function () {
+        /**
+         * @param {?} _locale
+         */
+        function DecimalPipe(_locale) {
+            this._locale = _locale;
+        }
+        /**
+         * @param {?} value
+         * @param {?=} digits
+         * @return {?}
+         */
+        DecimalPipe.prototype.transform = function (value, digits) {
+            if (digits === void 0) { digits = null; }
+            return formatNumber(DecimalPipe, this._locale, value, NumberFormatStyle.Decimal, digits);
+        };
+        return DecimalPipe;
+    }());
+    DecimalPipe.decorators = [
+        { type: _angular_core.Pipe, args: [{ name: 'number' },] },
+    ];
+    /**
+     * @nocollapse
+     */
+    DecimalPipe.ctorParameters = function () { return [
+        { type: undefined, decorators: [{ type: _angular_core.Inject, args: [_angular_core.LOCALE_ID,] },] },
+    ]; };
+    /**
+     * \@ngModule CommonModule
+     * \@whatItDoes Formats a number as a percentage according to locale rules.
+     * \@howToUse `number_expression | percent[:digitInfo]`
+     *
+     * \@description
+     *
+     * Formats a number as percentage.
+     *
+     * - `digitInfo` See {\@link DecimalPipe} for detailed description.
+     *
+     * WARNING: this pipe uses the Internationalization API which is not yet available in all browsers
+     * and may require a polyfill. See {\@linkDocs guide/browser-support} for details.
+     *
+     * ### Example
+     *
+     * {\@example common/pipes/ts/number_pipe.ts region='PercentPipe'}
+     *
+     * \@stable
+     */
+    var PercentPipe = (function () {
+        /**
+         * @param {?} _locale
+         */
+        function PercentPipe(_locale) {
+            this._locale = _locale;
+        }
+        /**
+         * @param {?} value
+         * @param {?=} digits
+         * @return {?}
+         */
+        PercentPipe.prototype.transform = function (value, digits) {
+            if (digits === void 0) { digits = null; }
+            return formatNumber(PercentPipe, this._locale, value, NumberFormatStyle.Percent, digits);
+        };
+        return PercentPipe;
+    }());
+    PercentPipe.decorators = [
+        { type: _angular_core.Pipe, args: [{ name: 'percent' },] },
+    ];
+    /**
+     * @nocollapse
+     */
+    PercentPipe.ctorParameters = function () { return [
+        { type: undefined, decorators: [{ type: _angular_core.Inject, args: [_angular_core.LOCALE_ID,] },] },
+    ]; };
+    /**
+     * \@ngModule CommonModule
+     * \@whatItDoes Formats a number as currency using locale rules.
+     * \@howToUse `number_expression | currency[:currencyCode[:symbolDisplay[:digitInfo]]]`
+     * \@description
+     *
+     * Use `currency` to format a number as currency.
+     *
+     * - `currencyCode` is the [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) currency code, such
+     *    as `USD` for the US dollar and `EUR` for the euro.
+     * - `symbolDisplay` is a boolean indicating whether to use the currency symbol or code.
+     *   - `true`: use symbol (e.g. `$`).
+     *   - `false`(default): use code (e.g. `USD`).
+     * - `digitInfo` See {\@link DecimalPipe} for detailed description.
+     *
+     * WARNING: this pipe uses the Internationalization API which is not yet available in all browsers
+     * and may require a polyfill. See {\@linkDocs guide/browser-support} for details.
+     *
+     * ### Example
+     *
+     * {\@example common/pipes/ts/number_pipe.ts region='CurrencyPipe'}
+     *
+     * \@stable
+     */
+    var CurrencyPipe = (function () {
+        /**
+         * @param {?} _locale
+         */
+        function CurrencyPipe(_locale) {
+            this._locale = _locale;
+        }
+        /**
+         * @param {?} value
+         * @param {?=} currencyCode
+         * @param {?=} symbolDisplay
+         * @param {?=} digits
+         * @return {?}
+         */
+        CurrencyPipe.prototype.transform = function (value, currencyCode, symbolDisplay, digits) {
+            if (currencyCode === void 0) { currencyCode = 'USD'; }
+            if (symbolDisplay === void 0) { symbolDisplay = false; }
+            if (digits === void 0) { digits = null; }
+            return formatNumber(CurrencyPipe, this._locale, value, NumberFormatStyle.Currency, digits, currencyCode, symbolDisplay);
+        };
+        return CurrencyPipe;
+    }());
+    CurrencyPipe.decorators = [
+        { type: _angular_core.Pipe, args: [{ name: 'currency' },] },
+    ];
+    /**
+     * @nocollapse
+     */
+    CurrencyPipe.ctorParameters = function () { return [
+        { type: undefined, decorators: [{ type: _angular_core.Inject, args: [_angular_core.LOCALE_ID,] },] },
+    ]; };
+    /**
+     * @param {?} text
+     * @return {?}
+     */
+    function parseIntAutoRadix(text) {
+        var /** @type {?} */ result = parseInt(text);
+        if (isNaN(result)) {
+            throw new Error('Invalid integer literal when parsing ' + text);
+        }
+        return result;
+    }
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    function isNumeric(value) {
+        return !isNaN(value - parseFloat(value));
+    }
     var /** @type {?} */ ISO8601_DATE_REGEX = /^(\d{4})-?(\d\d)-?(\d\d)(?:T(\d\d)(?::?(\d\d)(?::?(\d\d)(?:\.(\d+))?)?)?(Z|([+-])(\d\d):?(\d\d))?)?$/;
     /**
      * \@ngModule CommonModule
@@ -3333,7 +3352,7 @@
         DatePipe.prototype.transform = function (value, pattern) {
             if (pattern === void 0) { pattern = 'mediumDate'; }
             var /** @type {?} */ date;
-            if (isBlank$1(value) || value !== value)
+            if (isBlank(value) || value !== value)
                 return null;
             if (typeof value === 'string') {
                 value = value.trim();
@@ -3341,7 +3360,7 @@
             if (isDate(value)) {
                 date = value;
             }
-            else if (NumberWrapper.isNumeric(value)) {
+            else if (isNumeric(value)) {
                 date = new Date(parseFloat(value));
             }
             else if (typeof value === 'string' && /^(\d{4}-\d{1,2}-\d{1,2})$/.test(value)) {
@@ -3373,7 +3392,9 @@
         };
         return DatePipe;
     }());
-    /** @internal */
+    /**
+     * \@internal
+     */
     DatePipe._ALIASES = {
         'medium': 'yMMMdjms',
         'short': 'yMdjm',
@@ -3387,7 +3408,9 @@
     DatePipe.decorators = [
         { type: _angular_core.Pipe, args: [{ name: 'date', pure: true },] },
     ];
-    /** @nocollapse */
+    /**
+     * @nocollapse
+     */
     DatePipe.ctorParameters = function () { return [
         { type: undefined, decorators: [{ type: _angular_core.Inject, args: [_angular_core.LOCALE_ID,] },] },
     ]; };
@@ -3395,7 +3418,7 @@
      * @param {?} obj
      * @return {?}
      */
-    function isBlank$1(obj) {
+    function isBlank(obj) {
         return obj == null || obj === '';
     }
     /**
@@ -3434,7 +3457,6 @@
     function toInt(str) {
         return parseInt(str, 10);
     }
-
     var /** @type {?} */ _INTERPOLATION_REGEXP = /#/g;
     /**
      * \@ngModule CommonModule
@@ -3479,11 +3501,12 @@
     I18nPluralPipe.decorators = [
         { type: _angular_core.Pipe, args: [{ name: 'i18nPlural', pure: true },] },
     ];
-    /** @nocollapse */
+    /**
+     * @nocollapse
+     */
     I18nPluralPipe.ctorParameters = function () { return [
         { type: NgLocalization, },
     ]; };
-
     /**
      * \@ngModule CommonModule
      * \@whatItDoes Generic selector that displays the string that matches the current value.
@@ -3528,9 +3551,10 @@
     I18nSelectPipe.decorators = [
         { type: _angular_core.Pipe, args: [{ name: 'i18nSelect', pure: true },] },
     ];
-    /** @nocollapse */
+    /**
+     * @nocollapse
+     */
     I18nSelectPipe.ctorParameters = function () { return []; };
-
     /**
      * \@ngModule CommonModule
      * \@whatItDoes Converts value into JSON string.
@@ -3557,213 +3581,10 @@
     JsonPipe.decorators = [
         { type: _angular_core.Pipe, args: [{ name: 'json', pure: false },] },
     ];
-    /** @nocollapse */
+    /**
+     * @nocollapse
+     */
     JsonPipe.ctorParameters = function () { return []; };
-
-    var /** @type {?} */ _NUMBER_FORMAT_REGEXP = /^(\d+)?\.((\d+)(-(\d+))?)?$/;
-    /**
-     * @param {?} pipe
-     * @param {?} locale
-     * @param {?} value
-     * @param {?} style
-     * @param {?} digits
-     * @param {?=} currency
-     * @param {?=} currencyAsSymbol
-     * @return {?}
-     */
-    function formatNumber(pipe, locale, value, style, digits, currency, currencyAsSymbol) {
-        if (currency === void 0) { currency = null; }
-        if (currencyAsSymbol === void 0) { currencyAsSymbol = false; }
-        if (value == null)
-            return null;
-        // Convert strings to numbers
-        value = typeof value === 'string' && NumberWrapper.isNumeric(value) ? +value : value;
-        if (typeof value !== 'number') {
-            throw invalidPipeArgumentError(pipe, value);
-        }
-        var /** @type {?} */ minInt;
-        var /** @type {?} */ minFraction;
-        var /** @type {?} */ maxFraction;
-        if (style !== NumberFormatStyle.Currency) {
-            // rely on Intl default for currency
-            minInt = 1;
-            minFraction = 0;
-            maxFraction = 3;
-        }
-        if (digits) {
-            var /** @type {?} */ parts = digits.match(_NUMBER_FORMAT_REGEXP);
-            if (parts === null) {
-                throw new Error(digits + " is not a valid digit info for number pipes");
-            }
-            if (parts[1] != null) {
-                minInt = NumberWrapper.parseIntAutoRadix(parts[1]);
-            }
-            if (parts[3] != null) {
-                minFraction = NumberWrapper.parseIntAutoRadix(parts[3]);
-            }
-            if (parts[5] != null) {
-                maxFraction = NumberWrapper.parseIntAutoRadix(parts[5]);
-            }
-        }
-        return NumberFormatter.format(/** @type {?} */ (value), locale, style, {
-            minimumIntegerDigits: minInt,
-            minimumFractionDigits: minFraction,
-            maximumFractionDigits: maxFraction,
-            currency: currency,
-            currencyAsSymbol: currencyAsSymbol,
-        });
-    }
-    /**
-     * \@ngModule CommonModule
-     * \@whatItDoes Formats a number according to locale rules.
-     * \@howToUse `number_expression | number[:digitInfo]`
-     *
-     * Formats a number as text. Group sizing and separator and other locale-specific
-     * configurations are based on the active locale.
-     *
-     * where `expression` is a number:
-     *  - `digitInfo` is a `string` which has a following format: <br>
-     *     <code>{minIntegerDigits}.{minFractionDigits}-{maxFractionDigits}</code>
-     *   - `minIntegerDigits` is the minimum number of integer digits to use. Defaults to `1`.
-     *   - `minFractionDigits` is the minimum number of digits after fraction. Defaults to `0`.
-     *   - `maxFractionDigits` is the maximum number of digits after fraction. Defaults to `3`.
-     *
-     * For more information on the acceptable range for each of these numbers and other
-     * details see your native internationalization library.
-     *
-     * WARNING: this pipe uses the Internationalization API which is not yet available in all browsers
-     * and may require a polyfill. See {\@linkDocs guide/browser-support} for details.
-     *
-     * ### Example
-     *
-     * {\@example common/pipes/ts/number_pipe.ts region='NumberPipe'}
-     *
-     * \@stable
-     */
-    var DecimalPipe = (function () {
-        /**
-         * @param {?} _locale
-         */
-        function DecimalPipe(_locale) {
-            this._locale = _locale;
-        }
-        /**
-         * @param {?} value
-         * @param {?=} digits
-         * @return {?}
-         */
-        DecimalPipe.prototype.transform = function (value, digits) {
-            if (digits === void 0) { digits = null; }
-            return formatNumber(DecimalPipe, this._locale, value, NumberFormatStyle.Decimal, digits);
-        };
-        return DecimalPipe;
-    }());
-    DecimalPipe.decorators = [
-        { type: _angular_core.Pipe, args: [{ name: 'number' },] },
-    ];
-    /** @nocollapse */
-    DecimalPipe.ctorParameters = function () { return [
-        { type: undefined, decorators: [{ type: _angular_core.Inject, args: [_angular_core.LOCALE_ID,] },] },
-    ]; };
-    /**
-     * \@ngModule CommonModule
-     * \@whatItDoes Formats a number as a percentage according to locale rules.
-     * \@howToUse `number_expression | percent[:digitInfo]`
-     *
-     * \@description
-     *
-     * Formats a number as percentage.
-     *
-     * - `digitInfo` See {\@link DecimalPipe} for detailed description.
-     *
-     * WARNING: this pipe uses the Internationalization API which is not yet available in all browsers
-     * and may require a polyfill. See {\@linkDocs guide/browser-support} for details.
-     *
-     * ### Example
-     *
-     * {\@example common/pipes/ts/number_pipe.ts region='PercentPipe'}
-     *
-     * \@stable
-     */
-    var PercentPipe = (function () {
-        /**
-         * @param {?} _locale
-         */
-        function PercentPipe(_locale) {
-            this._locale = _locale;
-        }
-        /**
-         * @param {?} value
-         * @param {?=} digits
-         * @return {?}
-         */
-        PercentPipe.prototype.transform = function (value, digits) {
-            if (digits === void 0) { digits = null; }
-            return formatNumber(PercentPipe, this._locale, value, NumberFormatStyle.Percent, digits);
-        };
-        return PercentPipe;
-    }());
-    PercentPipe.decorators = [
-        { type: _angular_core.Pipe, args: [{ name: 'percent' },] },
-    ];
-    /** @nocollapse */
-    PercentPipe.ctorParameters = function () { return [
-        { type: undefined, decorators: [{ type: _angular_core.Inject, args: [_angular_core.LOCALE_ID,] },] },
-    ]; };
-    /**
-     * \@ngModule CommonModule
-     * \@whatItDoes Formats a number as currency using locale rules.
-     * \@howToUse `number_expression | currency[:currencyCode[:symbolDisplay[:digitInfo]]]`
-     * \@description
-     *
-     * Use `currency` to format a number as currency.
-     *
-     * - `currencyCode` is the [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) currency code, such
-     *    as `USD` for the US dollar and `EUR` for the euro.
-     * - `symbolDisplay` is a boolean indicating whether to use the currency symbol or code.
-     *   - `true`: use symbol (e.g. `$`).
-     *   - `false`(default): use code (e.g. `USD`).
-     * - `digitInfo` See {\@link DecimalPipe} for detailed description.
-     *
-     * WARNING: this pipe uses the Internationalization API which is not yet available in all browsers
-     * and may require a polyfill. See {\@linkDocs guide/browser-support} for details.
-     *
-     * ### Example
-     *
-     * {\@example common/pipes/ts/number_pipe.ts region='CurrencyPipe'}
-     *
-     * \@stable
-     */
-    var CurrencyPipe = (function () {
-        /**
-         * @param {?} _locale
-         */
-        function CurrencyPipe(_locale) {
-            this._locale = _locale;
-        }
-        /**
-         * @param {?} value
-         * @param {?=} currencyCode
-         * @param {?=} symbolDisplay
-         * @param {?=} digits
-         * @return {?}
-         */
-        CurrencyPipe.prototype.transform = function (value, currencyCode, symbolDisplay, digits) {
-            if (currencyCode === void 0) { currencyCode = 'USD'; }
-            if (symbolDisplay === void 0) { symbolDisplay = false; }
-            if (digits === void 0) { digits = null; }
-            return formatNumber(CurrencyPipe, this._locale, value, NumberFormatStyle.Currency, digits, currencyCode, symbolDisplay);
-        };
-        return CurrencyPipe;
-    }());
-    CurrencyPipe.decorators = [
-        { type: _angular_core.Pipe, args: [{ name: 'currency' },] },
-    ];
-    /** @nocollapse */
-    CurrencyPipe.ctorParameters = function () { return [
-        { type: undefined, decorators: [{ type: _angular_core.Inject, args: [_angular_core.LOCALE_ID,] },] },
-    ]; };
-
     /**
      * \@ngModule CommonModule
      * \@whatItDoes Creates a new List or String containing a subset (slice) of the elements.
@@ -3835,9 +3656,10 @@
     SlicePipe.decorators = [
         { type: _angular_core.Pipe, args: [{ name: 'slice', pure: false },] },
     ];
-    /** @nocollapse */
+    /**
+     * @nocollapse
+     */
     SlicePipe.ctorParameters = function () { return []; };
-
     /**
      * A collection of Angular pipes that are likely to be used in each and every application.
      */
@@ -3855,7 +3677,6 @@
         I18nPluralPipe,
         I18nSelectPipe,
     ];
-
     /**
      * The module that includes all the basic Angular directives like {\@link NgIf}, {\@link NgForOf}, ...
      *
@@ -3875,37 +3696,71 @@
                     ],
                 },] },
     ];
-    /** @nocollapse */
+    /**
+     * @nocollapse
+     */
     CommonModule.ctorParameters = function () { return []; };
     /**
-     * A module to contain deprecated directives.
+     * @license
+     * Copyright Google Inc. All Rights Reserved.
      *
-     * @deprecated
+     * Use of this source code is governed by an MIT-style license that can be
+     * found in the LICENSE file at https://angular.io/license
      */
-    var DeprecatedCommonModule = (function () {
-        function DeprecatedCommonModule() {
-        }
-        return DeprecatedCommonModule;
-    }());
-    DeprecatedCommonModule.decorators = [
-        { type: _angular_core.NgModule, args: [{ declarations: [COMMON_DEPRECATED_DIRECTIVES], exports: [COMMON_DEPRECATED_DIRECTIVES] },] },
-    ];
-    /** @nocollapse */
-    DeprecatedCommonModule.ctorParameters = function () { return []; };
-
+    var PLATFORM_BROWSER_ID = 'browser';
+    var /** @type {?} */ PLATFORM_SERVER_ID = 'server';
+    var /** @type {?} */ PLATFORM_WORKER_APP_ID = 'browserWorkerApp';
+    var /** @type {?} */ PLATFORM_WORKER_UI_ID = 'browserWorkerUi';
     /**
-     * @stable
+     * Returns whether a platform id represents a browser platform.
+     * \@experimental
+     * @param {?} platformId
+     * @return {?}
      */
-    var /** @type {?} */ VERSION = new _angular_core.Version('4.0.0-beta.8');
+    function isPlatformBrowser(platformId) {
+        return platformId === PLATFORM_BROWSER_ID;
+    }
+    /**
+     * Returns whether a platform id represents a server platform.
+     * \@experimental
+     * @param {?} platformId
+     * @return {?}
+     */
+    function isPlatformServer(platformId) {
+        return platformId === PLATFORM_SERVER_ID;
+    }
+    /**
+     * Returns whether a platform id represents a web worker app platform.
+     * \@experimental
+     * @param {?} platformId
+     * @return {?}
+     */
+    function isPlatformWorkerApp(platformId) {
+        return platformId === PLATFORM_WORKER_APP_ID;
+    }
+    /**
+     * Returns whether a platform id represents a web worker UI platform.
+     * \@experimental
+     * @param {?} platformId
+     * @return {?}
+     */
+    function isPlatformWorkerUi(platformId) {
+        return platformId === PLATFORM_WORKER_UI_ID;
+    }
+    /**
+     * \@stable
+     */
+    var VERSION = new _angular_core.Version('4.0.0-rc.5');
 
     exports.NgLocaleLocalization = NgLocaleLocalization;
     exports.NgLocalization = NgLocalization;
     exports.CommonModule = CommonModule;
-    exports.DeprecatedCommonModule = DeprecatedCommonModule;
     exports.NgClass = NgClass;
     exports.NgFor = NgFor;
     exports.NgForOf = NgForOf;
+    exports.NgForOfContext = NgForOfContext;
     exports.NgIf = NgIf;
+    exports.NgIfContext = NgIfContext;
     exports.NgPlural = NgPlural;
     exports.NgPluralCase = NgPluralCase;
     exports.NgStyle = NgStyle;
@@ -3926,17 +3781,24 @@
     exports.SlicePipe = SlicePipe;
     exports.UpperCasePipe = UpperCasePipe;
     exports.TitleCasePipe = TitleCasePipe;
+    exports.ɵPLATFORM_BROWSER_ID = PLATFORM_BROWSER_ID;
+    exports.ɵPLATFORM_SERVER_ID = PLATFORM_SERVER_ID;
+    exports.ɵPLATFORM_WORKER_APP_ID = PLATFORM_WORKER_APP_ID;
+    exports.ɵPLATFORM_WORKER_UI_ID = PLATFORM_WORKER_UI_ID;
+    exports.isPlatformBrowser = isPlatformBrowser;
+    exports.isPlatformServer = isPlatformServer;
+    exports.isPlatformWorkerApp = isPlatformWorkerApp;
+    exports.isPlatformWorkerUi = isPlatformWorkerUi;
     exports.VERSION = VERSION;
     exports.PlatformLocation = PlatformLocation;
+    exports.LOCATION_INITIALIZED = LOCATION_INITIALIZED;
     exports.LocationStrategy = LocationStrategy;
     exports.APP_BASE_HREF = APP_BASE_HREF;
     exports.HashLocationStrategy = HashLocationStrategy;
     exports.PathLocationStrategy = PathLocationStrategy;
     exports.Location = Location;
-    exports.ɵd = COMMON_DEPRECATED_DIRECTIVES;
-    exports.ɵc = COMMON_DIRECTIVES;
-    exports.ɵa = NgForOfRow;
-    exports.ɵb = NgIfContext;
-    exports.ɵe = COMMON_PIPES;
+    exports.ɵa = COMMON_DIRECTIVES;
+    exports.ɵb = COMMON_PIPES;
 
 }));
+//# sourceMappingURL=common.umd.js.map

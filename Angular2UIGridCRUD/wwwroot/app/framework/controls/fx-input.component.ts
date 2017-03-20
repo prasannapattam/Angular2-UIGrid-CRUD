@@ -5,7 +5,7 @@ import { FormGroup } from "@angular/forms";
     selector: "fx-input",
     template: `
 <md-input-container [formGroup]="formGroup">
-  <input md-input placeholder="{{placeholder}}" formControlName="{{controlName}}">
+  <input mdInput placeholder="{{placeholder}}" formControlName="{{controlName}}">
 </md-input-container>
 `
 })

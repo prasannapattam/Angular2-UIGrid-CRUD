@@ -1,12 +1,12 @@
 ﻿import { Component, OnInit, Inject } from "@angular/core";
-import { Router, NavigationStart, NavigationCancel } from "@angular/router";
+import { Router, NavigationEnd } from "@angular/router";
 import { Location } from "@angular/common";
 
 @Component({
     selector: "fx-router",
     template: `
-        <div [hidden]="ng2Route"><ui-view></ui-view></div>
-        <div [hidden]="!ng2Route"><router-outlet></router-outlet></div>
+        <div ><ui-view></ui-view></div>
+        <div ><router-outlet></router-outlet></div>
     `
 })
 export class FxRouterComponent {
@@ -21,28 +21,22 @@ export class FxRouterComponent {
             (evt: ng.IAngularEvent, toState: ng.ui.IState, toParams: ng.ui.IStateParamsService,
                 fromState: ng.ui.IState, fromParams: ng.ui.IStateParamsService) : void => {
                 this.ng2Route = false;
-                
             });
 
         // Ng2 Router change event
         router.events
-            .filter(event => event instanceof NavigationStart)
-            .subscribe((event: NavigationStart) => {
+            .filter(event => event instanceof NavigationEnd)
+            .subscribe((event: NavigationEnd) => {
                 this.ng2Route = true;
             });
 
-        $rootScope.$on("$locationChangeStart",
-            (evt: ng.IAngularEvent, newUrl: string, oldUrl: string,
-                newState: ng.ui.IState, 
-                oldState : ng.ui.IState): void => {
-               // debugger;
-
-            });
-
-        //location.subscribe(val => {
-        //    console.log(val);
-        //    debugger;
-        //});
+        location.subscribe(val => {
+            console.log(val);
+            // debugger;
+            let rts = this.router;
+            //this.router.navigateByUrl(val.url);
+            
+        });
     }
 }
 

@@ -21,6 +21,9 @@ import { UIViewDirective } from "./ui.view";
         RouterLinkComponent,
         UIViewDirective
     ],
+    providers: [
+        { provide: '$state', useFactory: (i) => i.get('$state'), deps: ['$injector'] }
+    ],
     entryComponents: [
         FxRouterComponent,
         RouterLinkComponent

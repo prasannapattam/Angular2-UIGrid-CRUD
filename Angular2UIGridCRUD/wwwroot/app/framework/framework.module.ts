@@ -11,15 +11,11 @@ import { FlexLayoutModule } from "@angular/flex-layout";
 import "./rxjs-operators";
 import "hammerjs";
 
-import { FxRouterModule } from "./route/fx.router.module";
+import { FxRouterModule } from "./router/fx.router.module";
 
 import { FxGridDirective } from "./controls/fx-grid.directive";
 import { FxInputComponent } from "./controls/fx-input.component";
 import { FxButtonListComponent } from "./controls/fx-button-list.component";
-
-// route related
-import { RouterLinkComponent } from "./route/router.link";
-import { UIViewDirective } from "./route/ui.view";
 
 import { InjectorService } from "./injector.service";
 

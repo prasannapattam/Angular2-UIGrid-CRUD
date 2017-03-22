@@ -2,9 +2,9 @@
     template: `<ui-view></ui-view>`
 }
 
-angular.module("ng2uigridcrud").component("fxView", uiView);
+angular.module("fxRouter").component("fxView", uiView);
 
-import { Directive, ElementRef, Injector, Input, Output, EventEmitter } from "@angular/core";
+import { Directive, ElementRef, Injector } from "@angular/core";
 import { UpgradeComponent } from "@angular/upgrade/static";
 
 @Directive({

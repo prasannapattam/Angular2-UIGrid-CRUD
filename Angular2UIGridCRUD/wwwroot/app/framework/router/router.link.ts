@@ -11,27 +11,24 @@ export class RouterLinkComponent {
 
     @Input() href: string;
 
-    navigateTo($event): void {
+    navigateTo($event: MouseEvent): void {
         $event.preventDefault();
 
-        // checking whether this url routed and invisible, then route to dummy and then reroute
-        // angular2 router does not have force reload like ui-router
+        // checking whether this url routed and hidden, then route to dummy and then reroute
+        // angular2 router does not have force reload like ui-router hence this workaround
         if (this.router.url == this.href) {
             this.router.navigateByUrl("#", { skipLocationChange: true });
+            setTimeout(() => this.router.navigateByUrl(this.href));
         }
-
-        // navigating to the url
-        this.router.navigateByUrl(this.href);
+        else {
+            // navigating to the url
+            this.router.navigateByUrl(this.href);
+        }
     }
 }
 
 import { downgradeComponent } from "@angular/upgrade/static";
 
-angular.module("ng2uigridcrud")
-    .directive(
-    "routerLink",
-    downgradeComponent({
-        component: RouterLinkComponent,
-        inputs: ['href']
-    }) as angular.IDirectiveFactory
+angular.module("fxRouter").directive("routerLink",
+    downgradeComponent({ component: RouterLinkComponent, inputs: ['href']}) as angular.IDirectiveFactory
 );

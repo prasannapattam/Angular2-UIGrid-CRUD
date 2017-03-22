@@ -35,10 +35,10 @@ namespace Angular2UIGridCRUD
                     template: "api/{controller}/{action}/{id?}",
                     defaults: new { controller = "App", action = "Index" });
 
-                routes.MapRoute(
-                    name: "catchall",
-                    template: "{*url}",
-                    defaults: new { controller = "Home", action = "Index" });
+                //routes.MapRoute(
+                //    name: "catchall",
+                //    template: "{*url}",
+                //    defaults: new { controller = "Home", action = "Index" });
             });
         }
     }
